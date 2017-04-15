@@ -1,0 +1,39 @@
+app.controller('DashboardCtrl', function($scope, $state, $http, $modal, $interval) {
+    $scope.openCluster = function(cluster){
+        $state.go('app.cluster', {id : cluster.uuid, name : cluster.name});
+    }
+    
+    var initData = function(){
+    	$http.get("info/clusters").success(function (response) {
+			$scope.clusters = response;
+		});
+    }
+    
+    $scope.addCluster = function(){
+    	$scope.modalModel = {};
+	    var modalInstance = $modal.open({
+	        templateUrl: 'tpl/app/modal/addClusterMonitor.html',
+	        scope : $scope
+	    })
+	    modalInstance.opened.then(function(){
+	    	$scope.ok = function () {
+	    		console.log($scope.modalModel);
+	    		$http.post('manager/cluster/add', $scope.modalModel).success(function(response){
+	    			if(response.status){
+		            	initData();
+	    			}
+	            });
+	    		modalInstance.close();
+		    };
+		    $scope.closeModal = function(){
+		    	modalInstance.close();
+		    }
+	    });
+    }
+    
+    initData();
+    
+    $interval(function(){
+    	initData();
+    },10000)
+});

@@ -1,0 +1,68 @@
+<!-- navbar -->
+<div class="app-header navbar">
+  <div class="navbar-header bg-info dker">
+    <button class="pull-right visible-xs dk" ui-toggle-class="show" data-target=".navbar-collapse">
+     <i class="glyphicon glyphicon-cog"></i>
+   </button>
+    <button class="pull-right visible-xs" ui-toggle-class="off-screen" data-target=".app-aside" ui-scroll="app">
+     <i class="glyphicon glyphicon-align-justify"></i>
+   </button>
+    <a href="#/" class="navbar-brand text-lt">
+      <i class="fa fa-joomla"></i>
+      <span class="hidden-folded m-l-xs">Redis Manager</span>
+    </a>
+  </div>
+  <div class="collapse pos-rlt navbar-collapse box-shadow bg-info dker">
+    <ul class="nav navbar-nav navbar-right">
+      <li class="hidden-xs">
+        <a ui-fullscreen></a>
+      </li>
+    </ul>
+  </div>
+</div>
+ <!-- / navbar -->
+
+ <!-- menu -->
+<div class="app-aside hidden-xs bg-light dker b-r">
+  <div class="aside-wrap">
+    <div class="navi-wrap">
+      <nav ui-nav class="navi">
+        <ul class="nav">
+          <li ui-sref-active="active">
+            <a ui-sref="app.dashboard">
+              <i class="fa fa-dashboard icon text-info-dker"></i>
+              <span class="font-bold">Dashboard</span>
+            </a>
+          </li>
+          <li ui-sref-active="active">
+            <a ui-sref="app.logs">
+              <i class="fa fa-file-text icon text-info-dker"></i>
+              <span class="font-bold">Cluster Monitor Log</span>
+            </a>
+          </li>
+          <li ui-sref-active="active">
+            <a ui-sref="app.install">
+              <i class="fa fa-asl-interpreting icon text-info-dker"></i>
+              <span class="font-bold">Cluster Config</span>
+            </a>
+          </li>
+          <li ui-sref-active="active">
+            <a ui-sref="app.version">
+              <i class="fa fa-cloud-upload icon text-info-dker"></i>
+              <span class="font-bold">Redis Version</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+ <!-- / menu -->
+
+ <!-- content -->
+ <div class="app-content">
+    <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+   <div ui-butterbar></div>
+   <a href class="off-screen-toggle hide" ui-toggle-class="off-screen" data-target=".app-aside" ></a>
+   <div class="app-content-body fade-in-up" ui-view></div>
+ </div>

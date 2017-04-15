@@ -1,0 +1,41 @@
+<div ng-controller="ClusterCtrl">
+  <div class="bg-light lter b-b wrapper-md row">
+	  <div class="col-sm-6">
+	  	  <h1 class="m-n font-thin h3">{{name}}</h1>
+	  </div>
+    
+	  <div class="col-sm-6 text-right hidden-xs">
+	  	  <button class="btn m-b-xs btn-sm btn-danger btn-addon" ng-click="delete_cluster()"><i class="fa fa-trash-o"></i>Delete</button>
+	  </div>
+  </div>
+  <div class="wrapper-md">
+
+    <div class="panel wrapper" style="height:500px;">
+        <graph-chart config="clusterOptions" data="clusterDatas"></graph-chart>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+          <div class="panel wrapper">
+            <select class="pull-right" ng-init="selectedComputerChats = computerChats[0]" ng-change="changeComputer(selectedComputerChats)"
+              ng-model="selectedComputerChats" ng-options="x.name for x in computerChats" />
+              <h4 class="font-thin m-t-none m-b text-muted">Server Info</h4>
+              <div style="height: 500px;">
+                  <line-chart config="computerConfig" data="computerDatas"></line-chart>
+              </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel wrapper">
+            <select class="pull-right" ng-init="selectedRedis = redisChats[0]" ng-change="changeRedis(selectedRedis)"
+              ng-model="selectedRedis" ng-options="x.name for x in redisChats" />
+              <h4 class="font-thin m-t-none m-b text-muted">Redis Info</h4>
+              <div style="height: 500px;">
+                  <line-chart config="redisConfig" data="redisDatas"></line-chart>
+              </div>
+          </div>
+        </div>
+    </div>
+
+  </div>
+</div>

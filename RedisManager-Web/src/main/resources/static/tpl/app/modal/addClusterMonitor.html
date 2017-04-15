@@ -1,0 +1,40 @@
+<div class="modal-header">
+	<button type="button" class="close" ng-click="closeModal()">&times;</button>
+    <h3 class="modal-title">Add Cluster Monitor</h3>
+</div>
+<div class="modal-body">
+	<form class="form-horizontal" name ="siteform" method="get" novalidate>
+	<div class="form-group">
+          <label class="col-sm-3 control-label">Cluster Name</label>
+          <div class="col-sm-9">
+            <input type="text" name="name" class="form-control" ng-model="modalModel.name" placeholder="Name" required>                     
+          <span style="color:red" ng-show="siteform.name.$dirty && siteform.name.$invalid">
+ 			<span ng-show="siteform.name.$error.required">Cluster Name is required</span>
+ 			</span>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Cluster Redis Host</label>
+          <div class="col-sm-9">
+            <input type="text" name="last_read_host"  class="form-control" ng-model="modalModel.last_read_host" placeholder="Host Of Cluster Redis" required> 
+            <span style="color:red" ng-show="siteform.last_read_host.$dirty && siteform.last_read_host.$invalid">
+ 			<span ng-show="siteform.last_read_host.$error.required">Cluster Redis Host is required</span>
+ 			</span>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Cluster Redis Host</label>
+          <div class="col-sm-9">
+            <input type="number" name="last_read_port"  class="form-control" ng-model="modalModel.last_read_port" placeholder="Port Of Cluster Redis" required> 
+            <span style="color:red" ng-show="siteform.last_read_port.$dirty && siteform.last_read_port.$invalid">
+ 			<span ng-show="siteform.last_read_port.$error.required">Cluster Redis Port is required</span>
+ 			</span>                     
+          </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-disabled="siteform.$invalid" ng-click="ok()">OK</button>
+</div>

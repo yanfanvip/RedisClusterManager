@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="app">
+<head>
+  <meta charset="utf-8" />
+  <title>Redis Manager</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
+  <link rel="stylesheet" href="css/animate.css" type="text/css" />
+  <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css" />
+  <link rel="stylesheet" href="css/simple-line-icons.css" type="text/css" />
+  <link rel="stylesheet" href="vendor/modules/angularjs-toaster/toaster.css" type="text/css" />
+  <link rel="stylesheet" href="css/font.css" type="text/css" />
+  <link rel="stylesheet" href="css/app.css" type="text/css" />
+</head>
+<body ng-controller="AppCtrl">
+  <!-- jQuery -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/libs/AngularQuery.js"></script>
+
+  <!-- Angular -->
+  <script src="vendor/angular/angular.js"></script>
+  <script src="vendor/angular/angular-animate/angular-animate.js"></script>
+  <script src="vendor/angular/angular-resource/angular-resource.js"></script>
+  <script src="vendor/angular/angular-ui-router/angular-ui-router.js"></script> 
+  <script src="vendor/modules/angularjs-toaster/toaster.js"></script>
+  <!-- bootstrap -->
+  <script src="vendor/angular/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <!-- lazyload -->
+  <script src="vendor/angular/oclazyload/ocLazyLoad.js"></script>
+  
+  
+  
+  <!-- HTML common -->
+  <script src="vendor/common/html5.js"></script>
+  <script src="vendor/echarts.js"></script>
+  <script src="vendor/angular.echarts.min.js"></script>
+  
+  <!-- App -->
+  <script src="js/app.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/config.lazyload.js"></script>
+  <script src="js/config.router.js"></script>
+  <script src="js/services/ui-load.js"></script>
+  <script src="js/filters/fromNow.js"></script>
+  <script src="js/directives/ui-jq.js"></script>
+  <script src="js/directives/ui-nav.js"></script>
+  <script src="js/directives/ui-validate.js"></script>
+  <script src="js/directives/ui-multiple-inputs.js"></script>
+  
+  <!-- Lazy loading -->
+  <div class="app" id="app" ng-class="{'app-aside-folded':true}" ui-view></div>
+
+</body>
+</html>

@@ -1,0 +1,12 @@
+*.project
+target
+.settings
+logs
+*.classpath
+/database/*
+database/*
+RedisManager-Base/database/*
+/hs_err_pid*
+RedisManager-Base/hs_err_pid*
+RedisManager-Service/database/*
+RedisManager-Web/database/*

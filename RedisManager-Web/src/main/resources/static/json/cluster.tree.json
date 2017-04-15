@@ -1,0 +1,411 @@
+{
+    
+    "status": true,
+    "masters": [
+        {
+            "master": {
+                "host": "10.16.236.133",
+                "myself": false,
+                "node": "dbe40fe419dc29278c1b4b67f382c6ffac44bb8c",
+                "port": 8200,
+                "role": "MASTER",
+                "slots": [
+                    {
+                        "end": 14195,
+                        "start": 13104
+                    }
+                ],
+                "status": "CONNECT"
+            },
+            "slaves": [
+                {
+                    "host": "10.16.236.134",
+                    "master": "dbe40fe419dc29278c1b4b67f382c6ffac44bb8c",
+                    "myself": false,
+                    "node": "bad45913bf9b2d0b071f9899bb09aea30156df64",
+                    "port": 8207,
+                    "role": "SLAVE",
+                    "status": "CONNECT"
+                }
+            ]
+        },
+        {
+            "master": {
+                "host": "10.16.236.133",
+                "myself": true,
+                "node": "8cb0738c14b5786f63731988fe747616d805e498",
+                "port": 8202,
+                "role": "MASTER",
+                "slots": [
+                    {
+                        "end": 12011,
+                        "start": 10920
+                    }
+                ],
+                "status": "CONNECT"
+            },
+            "slaves": [
+                {
+                    "host": "10.16.236.134",
+                    "master": "8cb0738c14b5786f63731988fe747616d805e498",
+                    "myself": false,
+                    "node": "477c0582246cefb9dce93c5456248c8a0f470b92",
+                    "port": 8205,
+                    "role": "SLAVE",
+                    "status": "CONNECT"
+                }
+            ]
+        },
+        {
+            "master": {
+                "host": "10.16.236.133",
+                "myself": false,
+                "node": "f23511b64396948988f15475ed9f1e891c737364",
+                "port": 8204,
+                "role": "MASTER",
+                "slots": [
+                    {
+                        "end": 9827,
+                        "start": 8736
+                    }
+                ],
+                "status": "CONNECT"
+            },
+            "slaves": [
+                {
+                    "host": "10.16.236.59",
+                    "master": "f23511b64396948988f15475ed9f1e891c737364",
+                    "myself": false,
+                    "node": "8c9d7a2b32f8b8c4f624a342ba81f414b32a4056",
+                    "port": 8205,
+                    "role": "SLAVE",
+                    "status": "CONNECT"
+                }
+            ]
+        },
+        {
+            "master": {
+                "host": "10.16.236.133",
+                "myself": false,
+                "node": "1f94ec0768b425d4c322d44049ec9a53eccf0bf9",
+                "port": 8206,
+                "role": "MASTER",
+                "slots": [
+                    {
+                        "end": 7643,
+                        "start": 6552
+                    }
+                ],
+                "status": "CONNECT"
+            },
+            "slaves": [
+                {
+                    "host": "10.16.236.134",
+                    "master": "1f94ec0768b425d4c322d44049ec9a53eccf0bf9",
+                    "myself": false,
+                    "node": "f1e6c59490e1e3d0728f6c26cd402ac53e3410a2",
+                    "port": 8201,
+                    "role": "SLAVE",
+                    "status": "CONNECT"
+                }
+            ]
+        },
+        {
+            "master": {
+                "host": "10.16.236.133",
+                "myself": false,
+                "node": "2f040ca032d827b0e447786edaae820c42eac267",
+                "port": 8208,
+                "role": "MASTER",
+                "slots": [
+                    {
+                        "end": 4367,
+                        "start": 3276
+                    }
+                ],
+                "status": "CONNECT"
+            },
+            "slaves": [
+                {
+                    "host": "10.16.236.134",
+                    "master": "2f040ca032d827b0e447786edaae820c42eac267",
+                    "myself": false,
+                    "node": "1e589ac3962011147185ad82945818b0fe31cd88",
+                    "port": 8203,
+                    "role": "SLAVE",
+                    "status": "CONNECT"
+                }
+            ]
+        },
+        {
+            "master": {
+                "host": "10.16.236.134",
+                "myself": false,
+                "node": "c67f5c05264cb2b0c8958da76c75f69e9107e95e",
+                "port": 8200,
+                "role": "MASTER",
+                "slots": [
+                    {
+                        "end": 16383,
+                        "start": 15288
+                    }
+                ],
+                "status": "CONNECT"
+            },
+            "slaves": [
+                {
+                    "host": "10.16.236.59",
+                    "master": "c67f5c05264cb2b0c8958da76c75f69e9107e95e",
+                    "myself": false,
+                    "node": "b151a31ae49dc463c8cfea7ffefcd829678b2019",
+                    "port": 8207,
+                    "role": "SLAVE",
+                    "status": "CONNECT"
+                }
+            ]
+        },
+        {
+            "master": {
+                "host": "10.16.236.134",
+                "myself": false,
+                "node": "1e7f4dc39b5536d049ae70b9ed42ffd82e07aca2",
+                "port": 8202,
+                "role": "MASTER",
+                "slots": [
+                    {
+                        "end": 15287,
+                        "start": 14196
+                    }
+                ],
+                "status": "CONNECT"
+            },
+            "slaves": [
+                {
+                    "host": "10.16.236.59",
+                    "master": "1e7f4dc39b5536d049ae70b9ed42ffd82e07aca2",
+                    "myself": false,
+                    "node": "57748d7514536a1e8cbd880841518fa26ca7b013",
+                    "port": 8209,
+                    "role": "SLAVE",
+                    "status": "CONNECT"
+                }
+            ]
+        },
+        {
+            "master": {
+                "host": "10.16.236.134",
+                "myself": false,
+                "node": "e74a5a94055328b2dce07929221461c711d1f376",
+                "port": 8204,
+                "role": "MASTER",
+                "slots": [
+                    {
+                        "end": 13103,
+                        "start": 12012
+                    }
+                ],
+                "status": "CONNECT"
+            },
+            "slaves": [
+                {
+                    "host": "10.16.236.59",
+                    "master": "e74a5a94055328b2dce07929221461c711d1f376",
+                    "myself": false,
+                    "node": "aedb825bfa5fa17b09445829282e823ab64092c7",
+                    "port": 8201,
+                    "role": "SLAVE",
+                    "status": "CONNECT"
+                }
+            ]
+        },
+        {
+            "master": {
+                "host": "10.16.236.134",
+                "myself": false,
+                "node": "4a10cd1358af727f49b1fb0291d5f36b6d61f258",
+                "port": 8206,
+                "role": "MASTER",
+                "slots": [
+                    {
+                        "end": 10919,
+                        "start": 9828
+                    }
+                ],
+                "status": "CONNECT"
+            },
+            "slaves": [
+                {
+                    "host": "10.16.236.59",
+                    "master": "4a10cd1358af727f49b1fb0291d5f36b6d61f258",
+                    "myself": false,
+                    "node": "4ff194de6c5861de83042a3f3a934bbc63ec2e28",
+                    "port": 8203,
+                    "role": "SLAVE",
+                    "status": "CONNECT"
+                }
+            ]
+        },
+        {
+            "master": {
+                "host": "10.16.236.134",
+                "myself": false,
+                "node": "3d109f91f72b9035774856999aedafe12033712e",
+                "port": 8208,
+                "role": "MASTER",
+                "slots": [
+                    {
+                        "end": 8735,
+                        "start": 7644
+                    }
+                ],
+                "status": "CONNECT"
+            },
+            "slaves": [
+                {
+                    "host": "10.16.236.133",
+                    "master": "3d109f91f72b9035774856999aedafe12033712e",
+                    "myself": false,
+                    "node": "f927e0b90d72aec4ecd8e76ef4c264bf00ffba3e",
+                    "port": 8205,
+                    "role": "SLAVE",
+                    "status": "CONNECT"
+                }
+            ]
+        },
+        {
+            "master": {
+                "host": "10.16.236.59",
+                "myself": false,
+                "node": "96f7f2616eb1ca9a3a3b0ac0825a70a9fe37f595",
+                "port": 8200,
+                "role": "MASTER",
+                "slots": [
+                    {
+                        "end": 5459,
+                        "start": 4368
+                    }
+                ],
+                "status": "CONNECT"
+            },
+            "slaves": [
+                {
+                    "host": "10.16.236.133",
+                    "master": "96f7f2616eb1ca9a3a3b0ac0825a70a9fe37f595",
+                    "myself": false,
+                    "node": "4edd4b7dc9b2ebe76dc0d0e6efa3a546b9844dde",
+                    "port": 8207,
+                    "role": "SLAVE",
+                    "status": "CONNECT"
+                }
+            ]
+        },
+        {
+            "master": {
+                "host": "10.16.236.59",
+                "myself": false,
+                "node": "1cd998864919d4f3ccc9ef7c2791a638b91da7f3",
+                "port": 8202,
+                "role": "MASTER",
+                "slots": [
+                    {
+                        "end": 6551,
+                        "start": 5460
+                    }
+                ],
+                "status": "CONNECT"
+            },
+            "slaves": [
+                {
+                    "host": "10.16.236.133",
+                    "master": "1cd998864919d4f3ccc9ef7c2791a638b91da7f3",
+                    "myself": false,
+                    "node": "2b19b28c1114faf9ca114972c9d72940fc4bf6e8",
+                    "port": 8203,
+                    "role": "SLAVE",
+                    "status": "CONNECT"
+                }
+            ]
+        },
+        {
+            "master": {
+                "host": "10.16.236.59",
+                "myself": false,
+                "node": "c0707df818bfdc39592777a95628ede1039076c0",
+                "port": 8204,
+                "role": "MASTER",
+                "slots": [
+                    {
+                        "end": 2183,
+                        "start": 1092
+                    }
+                ],
+                "status": "CONNECT"
+            },
+            "slaves": [
+                {
+                    "host": "10.16.236.133",
+                    "master": "c0707df818bfdc39592777a95628ede1039076c0",
+                    "myself": false,
+                    "node": "8d3a9403df5bc20fc6cb487c49ff23ccf52720be",
+                    "port": 8201,
+                    "role": "SLAVE",
+                    "status": "CONNECT"
+                }
+            ]
+        },
+        {
+            "master": {
+                "host": "10.16.236.59",
+                "myself": false,
+                "node": "12a1bb098c51a81115b3e1bb415563159dea5e48",
+                "port": 8206,
+                "role": "MASTER",
+                "slots": [
+                    {
+                        "end": 3275,
+                        "start": 2184
+                    }
+                ],
+                "status": "CONNECT"
+            },
+            "slaves": [
+                {
+                    "host": "10.16.236.134",
+                    "master": "12a1bb098c51a81115b3e1bb415563159dea5e48",
+                    "myself": false,
+                    "node": "cc3ce902d38007ada58f70c06b90cde6450c6fac",
+                    "port": 8209,
+                    "role": "SLAVE",
+                    "status": "CONNECT"
+                }
+            ]
+        },
+        {
+            "master": {
+                "host": "10.16.236.59",
+                "myself": false,
+                "node": "751bd6ac48234db8752747e6facda09c2e3ab3ad",
+                "port": 8208,
+                "role": "MASTER",
+                "slots": [
+                    {
+                        "end": 1091,
+                        "start": 0
+                    }
+                ],
+                "status": "CONNECT"
+            },
+            "slaves": [
+                {
+                    "host": "10.16.236.133",
+                    "master": "751bd6ac48234db8752747e6facda09c2e3ab3ad",
+                    "myself": false,
+                    "node": "50af779288d4e6228f28248fc15694b80db7b0c3",
+                    "port": 8209,
+                    "role": "SLAVE",
+                    "status": "CONNECT"
+                }
+            ]
+        }
+    ]
+}
