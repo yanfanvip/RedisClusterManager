@@ -1,16 +1,15 @@
 package com.newegg.redis.service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Vector;
 
 import javax.annotation.PostConstruct;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class ComputerInfoService {
 	@Autowired
 	AppConfig appConfig;
 	
-	static Map<String, List<D_ComputerInfo>> cache = new HashMap<String, List<D_ComputerInfo>>();
+	static Map<String, Vector<D_ComputerInfo>> cache = new HashMap<String, Vector<D_ComputerInfo>>();
 	static long history_time = 72 * 60 * 60 * 1000;
 	static Timer timer;
 	
@@ -66,15 +65,15 @@ public class ComputerInfoService {
 	}
 
 	public static void addComputerInfo(String cluster, D_ComputerInfo info) throws IOException{
-		List<D_ComputerInfo> cs = cache.get(cluster);
+		Vector<D_ComputerInfo> cs = cache.get(cluster);
 		if(cs == null){
-			cs = new ArrayList<D_ComputerInfo>();
+			cs = new Vector<D_ComputerInfo>();
 		}
 		cs.add(info);
 		cache.put(cluster, cs);
 	}
 	
-	public static synchronized void flushCache() throws IOException{
+	public static void flushCache() throws IOException{
 		if(cache.size() > 0){
 			cache.forEach((k,v)->{
 				try {
@@ -83,8 +82,8 @@ public class ComputerInfoService {
 				} catch (Exception e) {
 					log.error("monitor cluster ["+k+"] computer by [" + v + "] info insert database error", e);
 				}
+				v.clear();
 			});
-			cache.clear();
 		}
 	}
 }

@@ -1,0 +1,67 @@
+<div ng-controller="ClusterOptionsCtrl">
+	<div class="bg-light lter b-b wrapper-md row">
+		<div class="col-sm-6">
+			<h1 class="m-n font-thin h3">{{name}}</h1>
+		</div>
+	</div>
+	<div class="wrapper-md">
+
+	      <div class="panel panel-default">
+	        <table class="table table-striped m-b-none text-center">
+	          <thead>
+	            <tr>
+	            	<th class="text-center" style="width:50px;">Index</th>
+	            	<th class="text-center" style="width:50px;">Status</th>
+	            	<th class="text-center" style="width:100px;">Role</th>
+	              	<th class="text-center" style="width:250px;">Host</th>                    
+	              	<th class="text-center" style="width:100px;">Port</th>
+	              	<th class="text-center" style="width:350px;">Node</th>
+	              	<th class="text-center" style="width:350px;">Slots</th>
+	              	<th class="text-center">Options</th>
+	            </tr>
+	          </thead>
+	          <tbody ng-repeat="master in tree.masters">
+	            <tr>                 
+	              <td>{{$index + 1}}</td>
+	              <td>
+	              	<i ng-if="master.master.status == 'CONNECT'" class="icon-check text-success m-r-xs" />
+	              	<i ng-if="master.master.status != 'CONNECT'" class="icon-close text-danger m-r-xs" />
+	              </td>
+	              <td>{{master.master.role}}</td>
+	              <td>{{master.master.host}}</td>
+	              <td>{{master.master.port}}</td>
+	              <td>{{master.master.node}}</td>
+	              <td>{{master.master.slots}}</td>
+	              <td>
+	              	<button class="btn btn-sm btn-icon btn-info"><i class="fa fa-twitter"></i>A</button>
+	              	<button class="btn btn-sm btn-icon btn-info"><i class="fa fa-twitter"></i>B</button>
+	              	<button class="btn btn-sm btn-icon btn-info"><i class="fa fa-twitter"></i>C</button>
+	              </td>
+	            </tr>
+	            <tr ng-if="master.slaves != null && master.slaves.length > 0">
+	            	<td></td>
+	            	<td colspan="7" style="padding: 0;border-top: none;">
+		            	<table class="table" style="border-collapse:inherit;margin-bottom:0;">
+				            <tr ng-repeat="slave in master.slaves">
+				              <td style="width:50px;">
+				              	<i ng-if="slave.status == 'CONNECT'" class="icon-check text-success m-r-xs" />
+				              	<i ng-if="slave.status != 'CONNECT'" class="icon-close text-danger m-r-xs" />
+				              </td>
+				              <td style="width:100px;">{{slave.role}}</td>
+				              <td style="width:250px;">{{slave.host}}</td>
+				              <td style="width:100px;">{{slave.port}}</td>
+				              <td style="width:350px;">{{slave.node}}</td>
+				              <td style="width:350px;">{{slave.slots}}</td>
+				              <td>
+				              	
+				              </td>
+				           </tr>
+		               </table>
+	               </td>
+	            </tr>
+	          </tbody>
+	        </table>
+	    </div>
+		
+	</div>
+</div>

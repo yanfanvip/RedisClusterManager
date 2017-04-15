@@ -74,9 +74,9 @@ public class LevelTable {
 		DB db = getDB(cluster + "/" + clazz.getSimpleName());
 		WriteBatch bitch = db.createWriteBatch();
 		try {
-			data.forEach(t->{
+			for (T t : data) {
 				bitch.put(t.key().getBytes(), t.value());
-			});
+			}
 			db.write(bitch, new WriteOptions().sync(true));
 		} finally {
 			bitch.close();

@@ -22,7 +22,6 @@ angular.module('app').config(['$stateProvider', '$urlRouterProvider', function (
                       }]
                   }
               })
-              
               .state('app.cluster', {
                   url: '/cluster/:id?name',
                   templateUrl: 'tpl/app/cluster.html',
@@ -33,6 +32,17 @@ angular.module('app').config(['$stateProvider', '$urlRouterProvider', function (
                       }]
                   }
               })
+              .state('app.clusterOptions', {
+                  url: '/clusterOptions/:id?name',
+                  templateUrl: 'tpl/app/clusterOptions.html',
+                  resolve: {
+                    deps: ['$ocLazyLoad',
+                      function($ocLazyLoad){
+                        return $ocLazyLoad.load(['js/controllers/clusterOptions.js']);
+                      }]
+                  }
+              })
+              
       }
     ]
   );

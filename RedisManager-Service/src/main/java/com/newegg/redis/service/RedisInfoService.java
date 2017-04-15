@@ -1,15 +1,13 @@
 package com.newegg.redis.service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-
+import java.util.Vector;
 import javax.annotation.PostConstruct;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +26,7 @@ public class RedisInfoService {
 	@Autowired 
 	AppConfig appConfig;
 	
-	static Map<String, List<D_RedisInfo>> cache = new HashMap<String, List<D_RedisInfo>>();
+	static Map<String, Vector<D_RedisInfo>> cache = new HashMap<String, Vector<D_RedisInfo>>();
 	static long history_time = 72 * 60 * 60 * 1000;
 	static Timer timer;
 	
@@ -55,15 +53,15 @@ public class RedisInfoService {
 	}
 
 	public static void addRedisInfo(D_ClusterInfo cluster, D_RedisInfo info) throws IOException{
-		List<D_RedisInfo> cs = cache.get(cluster.getUuid());
+		Vector<D_RedisInfo> cs = cache.get(cluster.getUuid());
 		if(cs == null){
-			cs = new ArrayList<D_RedisInfo>();
+			cs = new Vector<D_RedisInfo>();
 		}
 		cs.add(info);
 		cache.put(cluster.getUuid(), cs);
 	}
 	
-	public static synchronized void flushCache() throws IOException{
+	public static void flushCache() throws IOException{
 		if(cache.size() > 0){
 			cache.forEach((k,v)->{
 				try {
@@ -72,8 +70,8 @@ public class RedisInfoService {
 				} catch (Exception e) {
 					log.error("monitor redis ["+k+"] computer by [" + v + "] info insert database error", e);
 				}
+				v.clear();
 			});
-			cache.clear();
 		}
 	}
 }

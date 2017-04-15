@@ -137,6 +137,9 @@ app.controller('ClusterCtrl', function($scope, $state, $stateParams, $http, $int
 			}
         });
     }
+    $scope.options_cluster = function(){
+    	$state.go('app.clusterOptions', {id : $scope.id, name : $scope.name});
+    }
     
     initData();
     $interval(function(){

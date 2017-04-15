@@ -17,7 +17,6 @@ app.controller('DashboardCtrl', function($scope, $state, $http, $modal, $interva
 	    })
 	    modalInstance.opened.then(function(){
 	    	$scope.ok = function () {
-	    		console.log($scope.modalModel);
 	    		$http.post('manager/cluster/add', $scope.modalModel).success(function(response){
 	    			if(response.status){
 		            	initData();
