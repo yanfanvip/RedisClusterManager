@@ -42,6 +42,16 @@ angular.module('app').config(['$stateProvider', '$urlRouterProvider', function (
                       }]
                   }
               })
+              .state('app.clusterQuery', {
+                  url: '/clusterQuery/:id?name',
+                  templateUrl: 'tpl/app/clusterQuery.html',
+                  resolve: {
+                    deps: ['$ocLazyLoad',
+                      function($ocLazyLoad){
+                        return $ocLazyLoad.load(['js/controllers/clusterQuery.js']);
+                      }]
+                  }
+              })
               
       }
     ]

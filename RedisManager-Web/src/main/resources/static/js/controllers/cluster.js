@@ -148,6 +148,9 @@ app.controller('ClusterCtrl', function($scope, $state, $stateParams, $q, $http, 
     $scope.options_cluster = function(){
     	$state.go('app.clusterOptions', {id : $scope.id, name : $scope.name});
     }
+    $scope.query_cluster = function(){
+    	$state.go('app.clusterQuery', {id : $scope.id, name : $scope.name});
+    }
     
     initData();
     

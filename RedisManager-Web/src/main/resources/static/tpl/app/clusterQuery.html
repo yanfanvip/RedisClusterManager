@@ -1,0 +1,51 @@
+<div ng-controller="ClusterQueryCtrl">
+	<div class="bg-light lter b-b wrapper-md row">
+		<div class="col-sm-6">
+			<h1 class="m-n font-thin h3">{{name}}</h1>
+		</div>
+	</div>
+	<div class="wrapper-md">
+
+		<div class="panel panel-default">
+			<div class="row wrapper">
+				<div class="col-sm-9">
+					<label ng-if="query.data">Scan By [{{query.key}}] Result</label>
+				</div>
+				<div class="col-sm-3">
+					<div class="input-group">
+						<input type="text" class="input-sm form-control" ng-model="query.key" placeholder="Scan by Redis Cluster">
+						<span class="input-group-btn">
+							<button class="btn btn-sm btn-default" type="button" ng-click="search(query.key, true);">Search</button>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="table-responsive">
+				<table class="table table-striped m-b-none text-center">
+					<thead>
+						<tr>
+							<th class="text-center" style="width: 50px;">Index</th>
+							<th class="text-center">Key</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="item in query.data">
+							<td class="text-center" style="width: 50px;">{{$index + 1}}</td>
+							<td class="text-center">{{item}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<footer ng-if="query.hasMore" class="panel-footer">
+				<div class="row">
+			        <div class="col-sm-4 hidden-xs"></div>
+			        <div class="col-sm-4 text-center">
+			        	<button class="btn m-b-xs w-xs btn-success" ng-click="next()">Next Page</button>
+			        </div>
+			        <div class="col-sm-4"></div>
+			      </div>
+		    </footer>
+		</div>
+
+	</div>
+</div>

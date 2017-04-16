@@ -28,10 +28,10 @@ public class RedisCommands {
 			}
 		};
 		
-		int i=10000;
+		int i=45;
 		while(i-->0){
 			JedisCluster cluster = new JedisCluster(list.get(RandomUtil.nextInt(0, 9)));
-			cluster.set("demo"+i, "demo:" + i);
+			cluster.set("aaa"+i, "aaabc:" + i);
 			cluster.close();
 		}
 		
