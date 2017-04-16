@@ -2,8 +2,10 @@ package com.newegg.redis.service;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
@@ -27,7 +29,7 @@ public class RedisInfoService {
 	AppConfig appConfig;
 	
 	static Map<String, Vector<D_RedisInfo>> cache = new HashMap<String, Vector<D_RedisInfo>>();
-	static long history_time = 72 * 60 * 60 * 1000;
+	static long history_time = 48 * 60 * 60 * 1000;
 	static Timer timer;
 	
 	@PostConstruct
@@ -49,7 +51,25 @@ public class RedisInfoService {
 	}
 	
 	public List<D_RedisInfo> getAll(String cluster) throws IOException{
-		return LevelTable.getAll(cluster, D_RedisInfo.class);
+		List<D_RedisInfo> lists = LevelTable.getAll(cluster, D_RedisInfo.class);
+		final Map<String, D_RedisInfo> last_info = new HashMap<String, D_RedisInfo>();
+		lists.forEach(d ->{
+			if(last_info.containsKey(d.id())){
+				D_RedisInfo last = last_info.get(d.id());
+				long second = Math.abs(d.getDate() - last.getDate()) / 1000;
+				long cmds = Math.abs(d.getTotal_commands_processed() - last.getTotal_commands_processed());
+				long connects = Math.abs(d.getTotal_connections_received() - last.getTotal_connections_received());
+				long inputs = Math.abs(d.getTotal_net_input_bytes() - last.getTotal_net_input_bytes());
+				long outputs = Math.abs(d.getTotal_net_output_bytes() - last.getTotal_net_output_bytes());
+				
+				d.setCommands_processed_ops_by_sec(cmds / second);
+				d.setConnections_received_ops_by_sec(connects / second);
+				d.setNet_input_bytes_ops_by_sec(inputs / second);
+				d.setNet_output_bytes_ops_by_sec(outputs / second);
+			}
+			last_info.put(d.id(), d);
+		});
+		return lists;
 	}
 
 	public static void addRedisInfo(D_ClusterInfo cluster, D_RedisInfo info) throws IOException{
@@ -57,21 +77,29 @@ public class RedisInfoService {
 		if(cs == null){
 			cs = new Vector<D_RedisInfo>();
 		}
-		cs.add(info);
+		synchronized (cs) {
+			cs.add(info);
+		}
 		cache.put(cluster.getUuid(), cs);
 	}
 	
 	public static void flushCache() throws IOException{
 		if(cache.size() > 0){
-			cache.forEach((k,v)->{
-				try {
-					LevelTable.put(k, D_RedisInfo.class, v);
-					LevelTable.deletePrev(k, D_RedisInfo.class, System.currentTimeMillis() - history_time);
-				} catch (Exception e) {
-					log.error("monitor redis ["+k+"] computer by [" + v + "] info insert database error", e);
+			Iterator<Entry<String, Vector<D_RedisInfo>>> iter = cache.entrySet().iterator();
+			while(iter.hasNext()){
+				Entry<String, Vector<D_RedisInfo>> entry = iter.next();
+				String k = entry.getKey();
+				Vector<D_RedisInfo> v = entry.getValue();
+				synchronized (v) {
+					try {
+						LevelTable.put(k, D_RedisInfo.class, v);
+						LevelTable.deletePrev(k, D_RedisInfo.class, System.currentTimeMillis() - history_time);
+					} catch (Exception e) {
+						log.error("monitor redis ["+k+"] computer by [" + v + "] info insert database error", e);
+					}
+					iter.remove();
 				}
-				v.clear();
-			});
+			}
 		}
 	}
 }

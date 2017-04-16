@@ -1,4 +1,4 @@
-app.controller('ClusterCtrl', function($scope, $state, $stateParams, $http, $interval) {
+app.controller('ClusterCtrl', function($scope, $state, $stateParams, $q, $http, $Popup, $interval) {
     $scope.id = $stateParams.id;
     $scope.name = $stateParams.name;
 
@@ -69,8 +69,9 @@ app.controller('ClusterCtrl', function($scope, $state, $stateParams, $http, $int
         $scope.computerDatas = formatData(datas);
     }
 
-    $scope.redisChats = [{ name : "instantaneous_ops_per_sec", field : "instantaneous_ops_per_sec" }, { name : "total_commands_processed",  field : "total_commands_processed" },
-                            {name : "total_connections_received", field : "total_connections_received"},{name : "used_memory", field : "used_memory"}];
+    $scope.redisChats = [{ name : "instantaneous_ops_per_sec", field : "instantaneous_ops_per_sec" }, { name : "commands_processed_ops_by_sec",  field : "commands_processed_ops_by_sec" },
+                            {name : "connections_received_ops_by_sec", field : "connections_received_ops_by_sec"},{name : "net_input_bytes_ops_by_sec", field : "net_input_bytes_ops_by_sec"},
+                            {name : "net_output_bytes_ops_by_sec", field : "net_output_bytes_ops_by_sec"},{name : "used_memory", field : "used_memory"}];
     var selectedRedis = $scope.redisChats[0];
     var redisAllData = null;
     
@@ -102,22 +103,25 @@ app.controller('ClusterCtrl', function($scope, $state, $stateParams, $http, $int
             $scope.changeComputer(selectedComputers);
         });
         
-        $http.get("info/cluster/tree/" + $scope.id).success(function (response) {
-        	series.data= [];
-        	series.links = [];
-            series.data.push({name: 'Cluster', symbolSize:60, itemStyle: { normal:{color: response.status?status_ok:status_fail}}} );
-            response.masters.forEach(function(data){
-                var master = data.master.host + ":" + data.master.port;
-                series.data.push({name: master, symbolSize:40, tooltip:{}, itemStyle: { normal:{color: data.master.status==='CONNECT'?status_ok:status_fail}}});
-                series.links.push({source: 'Cluster', target: master});
-                data.slaves.forEach(function(s){
-                    var slave = s.host + ":" + s.port;
-                    series.data.push({name: slave, symbolSize:30, tooltip:{}, itemStyle: { normal:{color:  s.status==='CONNECT'?status_ok:status_fail}}});
-                    series.links.push({source: master, target: slave});
-                });
-            });
-            $scope.clusterDatas = series;
-        });
+    	$q.all([$http.get("info/cluster/info/" + $scope.id), $http.get("info/cluster/tree/" + $scope.id)]).then(function(datas){
+    		 var clusterInfo = datas[0].data;
+    		 var response = datas[1].data;
+    		 
+    		 series.data= [];
+         	 series.links = [];
+             series.data.push({name: 'Cluster', symbolSize:60, itemStyle: { normal:{color: clusterInfo.cluster_state=='ok'?status_ok:status_fail}}} );
+             response.masters.forEach(function(data){
+                 var master = data.master.host + ":" + data.master.port;
+                 series.data.push({name: master, symbolSize:40, tooltip:{}, itemStyle: { normal:{color: data.master.status==='CONNECT'?status_ok:status_fail}}});
+                 series.links.push({source: 'Cluster', target: master});
+                 data.slaves.forEach(function(s){
+                     var slave = s.host + ":" + s.port;
+                     series.data.push({name: slave, symbolSize:30, tooltip:{}, itemStyle: { normal:{color:  s.status==='CONNECT'?status_ok:status_fail}}});
+                     series.links.push({source: master, target: slave});
+                 });
+             });
+             $scope.clusterDatas = series;
+    	});
     }
     
     function formatData(data){
@@ -131,19 +135,27 @@ app.controller('ClusterCtrl', function($scope, $state, $stateParams, $http, $int
     }
     
     $scope.delete_cluster = function(){
-    	$http.post('manager/cluster/delete/' + $scope.id).success(function(response){
-			if(response.status){
-				$state.go('app.dashboard');
-			}
-        });
+    	$Popup.confirm('Warning','do you sure delete this cluster?').then(function(flag){
+    		if(flag){
+    	    	$http.post('manager/cluster/delete/' + $scope.id).success(function(response){
+    				if(response.status){
+    					$state.go('app.dashboard');
+    				}
+    	        });
+    		}
+    	})
     }
     $scope.options_cluster = function(){
     	$state.go('app.clusterOptions', {id : $scope.id, name : $scope.name});
     }
     
     initData();
-    $interval(function(){
+    
+    var timer = $interval(function(){
     	initData();
-    },10000)
+    },30000)
 
+    $scope.$on("$destroy", function() {
+    	$interval.cancel(timer);
+    });
 });

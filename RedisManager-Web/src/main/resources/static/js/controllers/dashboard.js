@@ -19,7 +19,9 @@ app.controller('DashboardCtrl', function($scope, $state, $http, $modal, $interva
 	    	$scope.ok = function () {
 	    		$http.post('manager/cluster/add', $scope.modalModel).success(function(response){
 	    			if(response.status){
-		            	initData();
+	    				$http.get("info/cluster/info/" + response.data).then(function(){
+	    					initData();
+	    				});
 	    			}
 	            });
 	    		modalInstance.close();
@@ -32,7 +34,11 @@ app.controller('DashboardCtrl', function($scope, $state, $http, $modal, $interva
     
     initData();
     
-    $interval(function(){
+    var timer = $interval(function(){
     	initData();
-    },10000)
+    },30000)
+
+    $scope.$on("$destroy", function() {
+    	$interval.cancel(timer);
+    });
 });

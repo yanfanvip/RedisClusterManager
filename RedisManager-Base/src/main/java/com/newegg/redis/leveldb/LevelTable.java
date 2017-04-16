@@ -40,12 +40,12 @@ public class LevelTable {
 	
 	static Map<String, DB> databaseCache = new HashMap<String, DB>();
 	
-	static DB getDB(String dbName) throws IOException{
-		if(databaseCache.containsKey(dbName)){
-			return databaseCache.get(dbName);
+	static DB getDB(String path) throws IOException{
+		if(databaseCache.containsKey(path)){
+			return databaseCache.get(path);
 		}
 		DB db = null;
-		File home = new File(workhome + "/" + dbName);
+		File home = new File(path);
 		try {
 			db = JniDBFactory.factory.open(home, options);
 		} catch (Exception e) {
@@ -54,8 +54,12 @@ public class LevelTable {
 			}
 			db = JniDBFactory.factory.open(home, options);
 		}
-		databaseCache.put(dbName, db);
+		databaseCache.put(path, db);
 		return db;
+	}
+	
+	public static <T extends D_Level> String path(String cluster, Class<T> clazz){
+		return workhome + File.separator + cluster + File.separator + clazz.getSimpleName();
 	}
 	
 	private static boolean checkLock(File home) throws IOException{
@@ -65,13 +69,13 @@ public class LevelTable {
 		return current.canRead();
 	}
 	
-	public static void put(String cluster, D_Level data) throws IOException {
-		DB db = getDB(cluster + "/" + data.getClass().getSimpleName());
+	public static <T extends D_Level> void put(String cluster, T data) throws IOException {
+		DB db = getDB(path(cluster, data.getClass()));
 		db.put(data.key().getBytes(), data.value(), new WriteOptions().sync(true));
 	}
 	
 	public static <T extends D_Level> void put(String cluster, Class<T> clazz, List<T> data) throws IOException {
-		DB db = getDB(cluster + "/" + clazz.getSimpleName());
+		DB db = getDB(path(cluster, clazz));
 		WriteBatch bitch = db.createWriteBatch();
 		try {
 			for (T t : data) {
@@ -84,7 +88,7 @@ public class LevelTable {
 	}
 	
 	public static <T extends D_Level> void replace(String cluster, Class<T> clazz, List<T> data) throws IOException {
-		DB db = getDB(cluster + "/" + clazz.getSimpleName());
+		DB db = getDB(path(cluster, clazz));
 		ReadOptions readOptions = new ReadOptions().snapshot(db.getSnapshot());
 		DBIterator iterator = db.iterator(readOptions);
 		WriteBatch write = db.createWriteBatch();
@@ -106,7 +110,7 @@ public class LevelTable {
 	
 	@SuppressWarnings("unchecked")
 	public static <T extends D_Level> T get(String cluster, Class<T> clazz, String key) throws IOException {
-		DB db = getDB(cluster + "/" + clazz.getSimpleName());
+		DB db = getDB(path(cluster, clazz));
 		byte[] v = db.get(key.getBytes());
 		if(v == null){
 			return null;
@@ -114,14 +118,14 @@ public class LevelTable {
 		return (T)D_Level.deserialize(clazz, v);
 	}
 	
-	public static void delete(String cluster, Class<D_ClusterInfo> clazz, String key) throws IOException {
-		DB db = getDB(cluster + "/" + clazz.getSimpleName());
+	public static <T extends D_Level> void delete(String cluster, Class<T> clazz, String key) throws IOException {
+		DB db = getDB(path(cluster, clazz));
 		db.delete(key.getBytes());
 	}
 	
 	@SuppressWarnings("unchecked")
 	public static <T extends D_TimeLine> T last(String cluster, Class<T> clazz) throws IOException {
-		DB db = getDB(cluster + "/" + clazz.getSimpleName());
+		DB db = getDB(path(cluster, clazz));
 		ReadOptions readOptions = new ReadOptions().snapshot(db.getSnapshot());
 		DBIterator iterator = db.iterator(readOptions);
 		try {
@@ -139,7 +143,7 @@ public class LevelTable {
 	
 	@SuppressWarnings("unchecked")
 	public static <T extends D_Level> void iterator(String cluster, Class<T> clazz, Consumer<T> action) throws IOException{
-		DB db = getDB(cluster + "/" + clazz.getSimpleName());
+		DB db = getDB(path(cluster, clazz));
 		ReadOptions readOptions = new ReadOptions().snapshot(db.getSnapshot());
 		DBIterator iterator = db.iterator(readOptions);
 		try {
@@ -155,7 +159,7 @@ public class LevelTable {
 	
 	@SuppressWarnings("unchecked")
 	public static <T extends D_Level> List<T> getAll(String cluster, Class<T> clazz)throws IOException {
-		DB db = getDB(cluster + "/" + clazz.getSimpleName());
+		DB db = getDB(path(cluster, clazz));
 		ReadOptions readOptions = new ReadOptions().snapshot(db.getSnapshot());
 		DBIterator iterator = db.iterator(readOptions);
 		List<T> list = new ArrayList<T>();
@@ -171,27 +175,19 @@ public class LevelTable {
 		return list;
 	}
 	
-	public static <T extends D_Level> void deleteAll(String cluster, Class<T> clazz) throws IOException {
-		DB db = getDB(cluster + "/" + clazz.getSimpleName());
-		ReadOptions readOptions = new ReadOptions().snapshot(db.getSnapshot());
-		DBIterator iterator = db.iterator(readOptions);
-		WriteBatch write = db.createWriteBatch();
-		try {
-			iterator.seekToFirst();
-			iterator.forEachRemaining(entry ->{
-				byte[] key = entry.getKey();
-				write.delete(key);
-			});
-			db.write(write, new WriteOptions().sync(true));
-		} finally {
-			iterator.close();
-			write.close();
-		}
+	public static <T extends D_Level> void destroy(String cluster, Class<T> clazz) throws IOException {
+		String path = path(cluster, clazz);
+		DB db = getDB(path);
+		databaseCache.remove(path);
+		db.close();
+		File f = new File(path);
+		JniDBFactory.factory.destroy(f, options);
+		f.delete();
 	}
 	
 	@SuppressWarnings("unchecked")
 	public static <T extends D_TimeLine> void startWith(String cluster, Class<T> clazz, Long start, Consumer<T> action) throws IOException {
-		DB db = getDB(cluster + "/" + clazz.getSimpleName());
+		DB db = getDB(path(cluster, clazz));
 		ReadOptions readOptions = new ReadOptions().snapshot(db.getSnapshot());
 		DBIterator iterator = db.iterator(readOptions);
 		try {
@@ -207,7 +203,7 @@ public class LevelTable {
 	
 	@SuppressWarnings("unchecked")
 	public static <T extends D_TimeLine> void prevWith(String cluster, Class<T> clazz, Long start, Consumer<T> action) throws IOException {
-		DB db = getDB(cluster + "/" + clazz.getSimpleName());
+		DB db = getDB(path(cluster, clazz));
 		ReadOptions readOptions = new ReadOptions().snapshot(db.getSnapshot());
 		DBIterator iterator = db.iterator(readOptions);
 		try {
@@ -223,7 +219,7 @@ public class LevelTable {
 	}
 	
 	public static <T extends D_TimeLine> void deletePrev(String cluster, Class<T> clazz, Long start) throws IOException {
-		DB db = getDB(cluster + "/" + clazz.getSimpleName());
+		DB db = getDB(path(cluster, clazz));
 		ReadOptions readOptions = new ReadOptions().snapshot(db.getSnapshot());
 		DBIterator iterator = db.iterator(readOptions);
 		WriteBatch write = db.createWriteBatch();

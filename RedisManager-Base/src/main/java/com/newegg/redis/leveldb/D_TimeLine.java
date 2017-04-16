@@ -18,7 +18,7 @@ public abstract class D_TimeLine extends D_Level{
 		this.date = date;
 	}
 	
-	abstract String id();
+	abstract public String id();
 	
 	public String key(){
 		return date + ":" + id();

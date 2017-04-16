@@ -4,7 +4,7 @@ public class D_RedisInfo extends D_TimeLine{
 	private static final long serialVersionUID = -5578433883974986645L;
 	
 	@Override
-	String id() {
+	public String id() {
 		return hostname + ":" + port;
 	}
 	
@@ -56,6 +56,24 @@ public class D_RedisInfo extends D_TimeLine{
 	 * 不命中 key 的次数
 	 */
 	private Long keyspace_misses;
+	
+	/**
+	 * 监控周期内平均命令数
+	 */
+	private Long commands_processed_ops_by_sec;
+	/**
+	 * 监控周期内平均连接数
+	 */
+	private Long connections_received_ops_by_sec;
+	/**
+	 * 监控周期内平均网络输出总长度
+	 */
+	private Long net_input_bytes_ops_by_sec;
+	/**
+	 * 监控周期内平均网络输出总长度
+	 */
+	private Long net_output_bytes_ops_by_sec;
+	
 	public Long getUsed_memory() {
 		return used_memory;
 	}
@@ -133,5 +151,29 @@ public class D_RedisInfo extends D_TimeLine{
 	}
 	public void setPort(Integer port) {
 		this.port = port;
+	}
+	public Long getCommands_processed_ops_by_sec() {
+		return commands_processed_ops_by_sec;
+	}
+	public void setCommands_processed_ops_by_sec(Long commands_processed_ops_by_sec) {
+		this.commands_processed_ops_by_sec = commands_processed_ops_by_sec;
+	}
+	public Long getConnections_received_ops_by_sec() {
+		return connections_received_ops_by_sec;
+	}
+	public void setConnections_received_ops_by_sec(Long connections_received_ops_by_sec) {
+		this.connections_received_ops_by_sec = connections_received_ops_by_sec;
+	}
+	public Long getNet_input_bytes_ops_by_sec() {
+		return net_input_bytes_ops_by_sec;
+	}
+	public void setNet_input_bytes_ops_by_sec(Long net_input_bytes_ops_by_sec) {
+		this.net_input_bytes_ops_by_sec = net_input_bytes_ops_by_sec;
+	}
+	public Long getNet_output_bytes_ops_by_sec() {
+		return net_output_bytes_ops_by_sec;
+	}
+	public void setNet_output_bytes_ops_by_sec(Long net_output_bytes_ops_by_sec) {
+		this.net_output_bytes_ops_by_sec = net_output_bytes_ops_by_sec;
 	}
 }

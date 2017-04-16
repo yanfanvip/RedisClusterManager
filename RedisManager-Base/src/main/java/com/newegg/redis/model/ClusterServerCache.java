@@ -22,10 +22,20 @@ public class ClusterServerCache {
 		return servers;
 	}
 	
+	public static boolean clusterExist(String uuid){
+		return clusterServers.containsKey(uuid);
+	}
+	
+	public static void deleteCluster(String uuid){
+		clusterServers.remove(uuid);
+	}
+	
 	public static void updateServer(D_ClusterInfo c, List<D_RedisClusterNode> new_RedisClusterNodes){
 		HashSet<String> servers = new HashSet<String>();
-		for (D_RedisClusterNode n : new_RedisClusterNodes) {
-			servers.add(n.getHost());
+		if(new_RedisClusterNodes != null){
+			for (D_RedisClusterNode n : new_RedisClusterNodes) {
+				servers.add(n.getHost());
+			}
 		}
 		clusterServers.put(c.getUuid(), servers);
 	}

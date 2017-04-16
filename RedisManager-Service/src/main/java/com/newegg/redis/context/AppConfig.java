@@ -9,13 +9,13 @@ public class AppConfig {
 	/**
 	 * 历史数据保存期限
 	 */
-	@Value("${monitor.history.duration.hours:72}")
-	private int monitor_history_duration=72;
+	@Value("${monitor.history.duration.hours:48}")
+	private int monitor_history_duration=48;
 	/**
 	 * Redis监控频率
 	 */
-	@Value("${monitor.redis.period.second:300}")
-	private int monitor_redis_period_second = 300;
+	@Value("${monitor.redis.period.second:60}")
+	private int monitor_redis_period_second = 60;
 	
 
 	public int getMonitor_history_duration() {

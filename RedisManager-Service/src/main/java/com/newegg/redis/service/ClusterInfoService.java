@@ -1,7 +1,7 @@
 package com.newegg.redis.service;
 
+import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.UUID;
 import org.apache.commons.beanutils.BeanUtils;
@@ -12,7 +12,11 @@ import com.newegg.redis.cluster.RedisClusterClient;
 import com.newegg.redis.context.AppConstants;
 import com.newegg.redis.exceptions.ParameterException;
 import com.newegg.redis.leveldb.D_ClusterInfo;
+import com.newegg.redis.leveldb.D_ComputerInfo;
+import com.newegg.redis.leveldb.D_RedisClusterNode;
+import com.newegg.redis.leveldb.D_RedisInfo;
 import com.newegg.redis.leveldb.LevelTable;
+import com.newegg.redis.model.ClusterServerCache;
 import com.newegg.redis.model.M_clusterInfo;
 
 @Service
@@ -21,8 +25,9 @@ public class ClusterInfoService {
 	
 	/**
 	 * 添加一个集群到数据库中
+	 * @return 
 	 */
-	public void addClusterInfo(D_ClusterInfo info) throws Exception{
+	public String addClusterInfo(D_ClusterInfo info) throws Exception{
 		if(StringUtils.isBlank(info.getName())){
 			throw new ParameterException("cluster name can not empty");
 		}
@@ -33,6 +38,8 @@ public class ClusterInfoService {
 		});
 		info.setUuid(UUID.randomUUID().toString());
 		LevelTable.put(AppConstants.LEVEL_DATABASES_SYSTEM, info);
+		ClusterServerCache.updateServer(info, null);
+		return info.getUuid();
 	}
 	
 	/**
@@ -54,7 +61,14 @@ public class ClusterInfoService {
 	 * @throws IOException 
 	 */
 	public void delete(String cluster) throws IOException {
+		ClusterServerCache.deleteCluster(cluster);
 		LevelTable.delete(AppConstants.LEVEL_DATABASES_SYSTEM, D_ClusterInfo.class, cluster);
+		LevelTable.destroy(cluster, D_RedisInfo.class);
+		LevelTable.destroy(cluster, D_ComputerInfo.class);
+		LevelTable.destroy(cluster, D_RedisClusterNode.class);
+		String path = LevelTable.path(cluster, D_RedisClusterNode.class);
+		File home = new File(path).getParentFile();
+		home.delete();
 	}
 	
 	/**
@@ -74,15 +88,15 @@ public class ClusterInfoService {
 	
 	/**
 	 * 根据从Redis中查询到的数据更新数据库
-	 * @throws InvocationTargetException 
-	 * @throws IllegalAccessException 
+	 * @return 
 	 */
-	public void updateClusterInfoByRedis(String id, M_clusterInfo info) throws Exception {
+	public D_ClusterInfo updateClusterInfoByRedis(String id, M_clusterInfo info) throws Exception {
 		D_ClusterInfo clusterInfo = new D_ClusterInfo();
 		D_ClusterInfo old_ClusterInfo = getClusterInfo(id);
 		BeanUtils.copyProperties(clusterInfo, old_ClusterInfo);
 		BeanUtils.copyProperties(clusterInfo, info);
 		updateClusterInfo(clusterInfo);
+		return clusterInfo;
 	}
 
 	/**
