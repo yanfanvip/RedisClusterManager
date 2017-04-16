@@ -135,7 +135,7 @@ app.controller('ClusterCtrl', function($scope, $state, $stateParams, $q, $http, 
     }
     
     $scope.delete_cluster = function(){
-    	$Popup.confirm('Warning','do you sure delete this cluster?').then(function(flag){
+    	$Popup.confirm('Warning','are you sure delete this cluster?').then(function(flag){
     		if(flag){
     	    	$http.post('manager/cluster/delete/' + $scope.id).success(function(response){
     				if(response.status){

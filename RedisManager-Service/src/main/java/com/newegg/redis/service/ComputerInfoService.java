@@ -1,15 +1,13 @@
 package com.newegg.redis.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.Vector;
-import java.util.Map.Entry;
 import javax.annotation.PostConstruct;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,7 +27,7 @@ public class ComputerInfoService {
 	@Autowired
 	AppConfig appConfig;
 	
-	static Map<String, Vector<D_ComputerInfo>> cache = new HashMap<String, Vector<D_ComputerInfo>>();
+	static Map<String, List<D_ComputerInfo>> cache = new HashMap<String, List<D_ComputerInfo>>();
 	static long history_time = 48 * 60 * 60 * 1000;
 	static Timer timer;
 	
@@ -65,34 +63,26 @@ public class ComputerInfoService {
 		}
 	}
 
-	public static void addComputerInfo(String cluster, D_ComputerInfo info) throws IOException{
-		Vector<D_ComputerInfo> cs = cache.get(cluster);
+	public static synchronized void addComputerInfo(String cluster, D_ComputerInfo info) throws IOException{
+		List<D_ComputerInfo> cs = cache.get(cluster);
 		if(cs == null){
-			cs = new Vector<D_ComputerInfo>();
+			cs = new ArrayList<D_ComputerInfo>();
 		}
-		synchronized (cs) {
-			cs.add(info);
-		}
+		cs.add(info);
 		cache.put(cluster, cs);
 	}
 	
-	public static void flushCache() throws IOException{
+	public static synchronized void flushCache() throws IOException{
 		if(cache.size() > 0){
-			Iterator<Entry<String, Vector<D_ComputerInfo>>> iter = cache.entrySet().iterator();
-			while(iter.hasNext()){
-				Entry<String, Vector<D_ComputerInfo>> entry = iter.next();
-				String k = entry.getKey();
-				Vector<D_ComputerInfo> v = entry.getValue();
-				synchronized (v) {
-					try {
-						LevelTable.put(k, D_ComputerInfo.class, v);
-						LevelTable.deletePrev(k, D_ComputerInfo.class, System.currentTimeMillis() - history_time);
-					} catch (Exception e) {
-						log.error("monitor cluster ["+k+"] computer by [" + v + "] info insert database error", e);
-					}
-					iter.remove();
+			cache.forEach((k,v)->{
+				try {
+					LevelTable.put(k, D_ComputerInfo.class, v);
+					LevelTable.deletePrev(k, D_ComputerInfo.class, System.currentTimeMillis() - history_time);
+				} catch (Exception e) {
+					log.error("monitor cluster ["+k+"] computer by [" + v + "] info insert database error", e);
 				}
-			}
+			});
+			cache.clear();
 		}
 	}
 }

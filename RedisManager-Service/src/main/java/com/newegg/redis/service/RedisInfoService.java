@@ -1,14 +1,12 @@
 package com.newegg.redis.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.Vector;
 import javax.annotation.PostConstruct;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,7 +26,7 @@ public class RedisInfoService {
 	@Autowired 
 	AppConfig appConfig;
 	
-	static Map<String, Vector<D_RedisInfo>> cache = new HashMap<String, Vector<D_RedisInfo>>();
+	static Map<String, List<D_RedisInfo>> cache = new HashMap<String, List<D_RedisInfo>>();
 	static long history_time = 48 * 60 * 60 * 1000;
 	static Timer timer;
 	
@@ -72,34 +70,26 @@ public class RedisInfoService {
 		return lists;
 	}
 
-	public static void addRedisInfo(D_ClusterInfo cluster, D_RedisInfo info) throws IOException{
-		Vector<D_RedisInfo> cs = cache.get(cluster.getUuid());
+	public static synchronized void addRedisInfo(D_ClusterInfo cluster, D_RedisInfo info) throws IOException{
+		List<D_RedisInfo> cs = cache.get(cluster.getUuid());
 		if(cs == null){
-			cs = new Vector<D_RedisInfo>();
+			cs = new ArrayList<D_RedisInfo>();
 		}
-		synchronized (cs) {
-			cs.add(info);
-		}
+		cs.add(info);
 		cache.put(cluster.getUuid(), cs);
 	}
 	
-	public static void flushCache() throws IOException{
+	public static synchronized void flushCache() throws IOException{
 		if(cache.size() > 0){
-			Iterator<Entry<String, Vector<D_RedisInfo>>> iter = cache.entrySet().iterator();
-			while(iter.hasNext()){
-				Entry<String, Vector<D_RedisInfo>> entry = iter.next();
-				String k = entry.getKey();
-				Vector<D_RedisInfo> v = entry.getValue();
-				synchronized (v) {
-					try {
-						LevelTable.put(k, D_RedisInfo.class, v);
-						LevelTable.deletePrev(k, D_RedisInfo.class, System.currentTimeMillis() - history_time);
-					} catch (Exception e) {
-						log.error("monitor redis ["+k+"] computer by [" + v + "] info insert database error", e);
-					}
-					iter.remove();
+			cache.forEach((k,v)->{
+				try {
+					LevelTable.put(k, D_RedisInfo.class, v);
+					LevelTable.deletePrev(k, D_RedisInfo.class, System.currentTimeMillis() - history_time);
+				} catch (Exception e) {
+					log.error("monitor redis ["+k+"] computer by [" + v + "] info insert database error", e);
 				}
-			}
+			});
+			cache.clear();
 		}
 	}
 }

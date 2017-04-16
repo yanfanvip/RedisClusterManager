@@ -26,12 +26,17 @@
 						<tr>
 							<th class="text-center" style="width: 50px;">Index</th>
 							<th class="text-center">Key</th>
+							<th class="text-center">Options</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr ng-repeat="item in query.data">
 							<td class="text-center" style="width: 50px;">{{$index + 1}}</td>
 							<td class="text-center">{{item}}</td>
+							<td class="text-center">
+								<button class="btn btn-sm btn-icon btn-info"><i class="fa fa-eye" ng-click="get(item)"></i></button>
+	              				<button class="btn btn-sm btn-icon btn-danger"><i class="fa fa-trash-o" ng-click="del(item)"></i></button>
+							</td>
 						</tr>
 					</tbody>
 				</table>
