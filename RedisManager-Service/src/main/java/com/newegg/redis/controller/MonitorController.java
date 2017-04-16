@@ -15,7 +15,6 @@ public class MonitorController extends BaseController{
 	
 	@RequestMapping(value = "metric", method = RequestMethod.POST)
 	public void metric(@RequestParam Map<String, String> metric) throws Exception {
-		System.out.println(metric);
 		D_ComputerInfo info = Convert.convert(metric, D_ComputerInfo.class);
 		ComputerInfoService.addComputerInfo(info);
 	}

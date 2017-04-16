@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.newegg.redis.leveldb.D_ClusterInfo;
 import com.newegg.redis.model.ClusterServerCache;
+import com.newegg.redis.monitor.MonitorRedis;
 import com.newegg.redis.service.ClusterInfoService;
 
 @RestController
@@ -17,11 +18,16 @@ public class ClusterManagerController extends BaseController{
 	@Autowired
 	ClusterInfoService clusterInfoService;
 	
+	@Autowired
+	MonitorRedis monitor;
+	
 	@RequestMapping(value = "/cluster/add", method = RequestMethod.POST)
 	@ResponseBody
 	public Object cluster_add(D_ClusterInfo clusterInfo) throws Exception {
-		String id = clusterInfoService.addClusterInfo(clusterInfo);
-		return SUCCESS(id);
+		clusterInfo = clusterInfoService.addClusterInfo(clusterInfo);
+		ClusterServerCache.updateServer(clusterInfo, null);
+		monitor.updateCluster(clusterInfo);
+		return SUCCESS(clusterInfo.getUuid());
 	}
 	
 	@RequestMapping(value = "/cluster/delete/{cluster}", method = RequestMethod.POST)
@@ -29,6 +35,7 @@ public class ClusterManagerController extends BaseController{
 	public Object cluster_delete(@PathVariable String cluster) throws Exception {
 		if(ClusterServerCache.clusterExist(cluster)){
 			clusterInfoService.delete(cluster);
+			ClusterServerCache.deleteCluster(cluster);
 		}
 		return SUCCESS();
 	}

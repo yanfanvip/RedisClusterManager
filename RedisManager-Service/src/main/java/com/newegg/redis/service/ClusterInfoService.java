@@ -16,7 +16,6 @@ import com.newegg.redis.leveldb.D_ComputerInfo;
 import com.newegg.redis.leveldb.D_RedisClusterNode;
 import com.newegg.redis.leveldb.D_RedisInfo;
 import com.newegg.redis.leveldb.LevelTable;
-import com.newegg.redis.model.ClusterServerCache;
 import com.newegg.redis.model.M_clusterInfo;
 
 @Service
@@ -27,7 +26,7 @@ public class ClusterInfoService {
 	 * 添加一个集群到数据库中
 	 * @return 
 	 */
-	public String addClusterInfo(D_ClusterInfo info) throws Exception{
+	public D_ClusterInfo addClusterInfo(D_ClusterInfo info) throws Exception{
 		if(StringUtils.isBlank(info.getName())){
 			throw new ParameterException("cluster name can not empty");
 		}
@@ -38,8 +37,7 @@ public class ClusterInfoService {
 		});
 		info.setUuid(UUID.randomUUID().toString());
 		LevelTable.put(AppConstants.LEVEL_DATABASES_SYSTEM, info);
-		ClusterServerCache.updateServer(info, null);
-		return info.getUuid();
+		return info;
 	}
 	
 	/**
@@ -61,7 +59,6 @@ public class ClusterInfoService {
 	 * @throws IOException 
 	 */
 	public void delete(String cluster) throws IOException {
-		ClusterServerCache.deleteCluster(cluster);
 		LevelTable.delete(AppConstants.LEVEL_DATABASES_SYSTEM, D_ClusterInfo.class, cluster);
 		LevelTable.destroy(cluster, D_RedisInfo.class);
 		LevelTable.destroy(cluster, D_ComputerInfo.class);
