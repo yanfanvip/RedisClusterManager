@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.newegg.redis.cluster.RedisClusterClient;
+import com.newegg.redis.cluster.RedisClusterTerminal;
 import com.newegg.redis.leveldb.D_ClusterInfo;
 import com.newegg.redis.leveldb.D_ClusterNode_Tree;
 import com.newegg.redis.leveldb.D_ComputerInfo;
@@ -50,7 +49,7 @@ public class SystemInfoController extends BaseController{
 			return null;
 		}
 		D_ClusterInfo info = clusterInfoService.getClusterInfo(cluster);
-		RedisClusterClient client = new RedisClusterClient(info.getLast_read_host(), info.getLast_read_port());
+		RedisClusterTerminal client = new RedisClusterTerminal(info.getLast_read_host(), info.getLast_read_port());
 		try {
 			M_clusterInfo redisClusterInfo = clusterInfoService.getClusterInfoByRedis(client);
 			info = clusterInfoService.updateClusterInfoByRedis(cluster, redisClusterInfo);

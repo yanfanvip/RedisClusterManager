@@ -33,9 +33,8 @@
 	              <td>{{master.master.node}}</td>
 	              <td>{{master.master.slots}}</td>
 	              <td>
-	              	<button class="btn btn-sm btn-icon btn-info"><i class="fa fa-twitter"></i>A</button>
-	              	<button class="btn btn-sm btn-icon btn-info"><i class="fa fa-twitter"></i>B</button>
-	              	<button class="btn btn-sm btn-icon btn-info"><i class="fa fa-twitter"></i>C</button>
+	                  <button class="btn m-b-xs btn-sm btn-info btn-addon" ng-click="moveSlot(master.master)"><i class="fa fa-cubes"></i>Move Slots</button>
+	                  <button class="btn m-b-xs btn-sm btn-info btn-addon" ng-click="queryData(master.master)"><i class="fa fa-search"></i>Query Data</button>
 	              </td>
 	            </tr>
 	            <tr ng-if="master.slaves != null && master.slaves.length > 0">
@@ -44,8 +43,8 @@
 		            	<table class="table" style="border-collapse:inherit;margin-bottom:0;">
 				            <tr ng-repeat="slave in master.slaves">
 				              <td style="width:50px;">
-				              	<i ng-if="slave.status == 'CONNECT'" class="icon-check text-success m-r-xs" />
-				              	<i ng-if="slave.status != 'CONNECT'" class="icon-close text-danger m-r-xs" />
+				              	 <i ng-if="slave.status == 'CONNECT'" class="icon-check text-success m-r-xs" />
+				              	 <i ng-if="slave.status != 'CONNECT'" class="icon-close text-danger m-r-xs" />
 				              </td>
 				              <td style="width:100px;">{{slave.role}}</td>
 				              <td style="width:250px;">{{slave.host}}</td>
@@ -53,7 +52,8 @@
 				              <td style="width:350px;">{{slave.node}}</td>
 				              <td style="width:350px;">{{slave.slots}}</td>
 				              <td>
-				              	
+				                  <button class="btn m-b-xs btn-sm btn-primary btn-addon" ng-click="moveSlave(slave)"><i class="fa fa-unlink"></i>Move Slave</button>
+	                  			  <button class="btn m-b-xs btn-sm btn-primary btn-addon" ng-click="toMaster(slave)"><i class="fa fa-random"></i>Be Master</button>
 				              </td>
 				           </tr>
 		               </table>

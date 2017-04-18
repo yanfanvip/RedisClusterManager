@@ -141,6 +141,63 @@ app.factory('$Popup', ['$q','$modal', function ($q, $modal) {
     }
 }]);
 
+app.factory('$console', ['$q','$compile','$modal', '$websocket', function ($q, $compile, $modal, $websocket) {
+    return {
+    	show: function(title, websocket, message) {
+	        var deferred = $q.defer();
+	        var confirmModal = $modal.open({
+	          backdrop: 'static',
+	          windowClass: "terminalModal",
+	          template :  '<div class="m-c">\n'+
+				          '  <div class="modal-header">\n'+
+				          '    <h4 class="modal-title">{{title}}</h4>\n'+
+				          '  </div>\n'+
+				          '  <div class="modal-body"><div id="console" class="terminal"></div></div>\n'+
+				          '  <div class="modal-footer" style="text-align: center;">\n'+
+				          '    <button type="button" class="btn btn-primary" ng-click="ok()">OK</button>\n'+
+				          '  </div>\n'+
+				          '</div>\n',
+			  controller: function($scope, $modalInstance){
+				  $scope.title = title;
+				  $scope.ok = function () {
+					  $modalInstance.dismiss('cancel');
+			          deferred.resolve(true);
+		          };
+		          confirmModal.opened.then(function() {
+		          		var ws = $websocket('ws://'+document.location.host + websocket);
+						  ws.onOpen(function(){
+						  		ws.send(JSON.stringify(message));
+						  		var element = angular.element("#console");
+						  	  	element.append('<p class="log">command>' + websocket + " "+ JSON.stringify(message) + '</p>');
+						  	  	var top = element[0].scrollHeight - element[0].clientHeight + 100;
+							  	if(top > 0){
+							  		element[0].scrollTop = top;
+							  	}
+						  });
+						  ws.onMessage(function (message) {
+						  		var element = angular.element("#console");
+						  	  	element.append('<p class="log">log>' + message.data + '</p>');
+						  	  	var top = element[0].scrollHeight - element[0].clientHeight + 100;
+							  	if(top > 0){
+							  		element[0].scrollTop = top;
+							  	}
+						  });
+						  ws.onError(function(){
+						  		var element = angular.element("#console");
+						  	  	element.append('<p class="log">error>websocket error</p>');
+						  	  	var top = element[0].scrollHeight - element[0].clientHeight + 100;
+							  	if(top > 0){
+							  		element[0].scrollTop = top;
+							  	}
+						  })
+                  });
+			  }
+	        });
+	        return deferred.promise;
+      }
+    }
+}]);
+
 app.filter('to_trusted', ['$sce',
     function ($sce) {
 		return function (text) { 

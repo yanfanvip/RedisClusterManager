@@ -18,12 +18,12 @@ public class RedisClusterUtil {
 	
 	public static void create(List<HostAndPort> list,int masterSize, Notify notify) throws Exception {
 		message(notify, ">> start create cluster; node size : " + list.size() + " master size :" + masterSize);
-		Map<HostAndPort, RedisClusterClient> hrs = new HashMap<HostAndPort, RedisClusterClient>();
+		Map<HostAndPort, RedisClusterTerminal> hrs = new HashMap<HostAndPort, RedisClusterTerminal>();
 		message(notify, ">> reset nodes");
-		List<RedisClusterClient> cs = new ArrayList<RedisClusterClient>(){
+		List<RedisClusterTerminal> cs = new ArrayList<RedisClusterTerminal>(){
 			private static final long serialVersionUID = 1L; {
 				for (HostAndPort hp : list) {
-					RedisClusterClient client = new RedisClusterClient(hp);
+					RedisClusterTerminal client = new RedisClusterTerminal(hp);
 					client.reset();
 					add(client);
 					hrs.put(hp, client);
@@ -61,7 +61,7 @@ public class RedisClusterUtil {
 	/**
 	 * 分配槽
 	 */
-	public static void assignSlot(List<HostAndPort> masters, Map<HostAndPort, RedisClusterClient> clients, Notify notify) {
+	public static void assignSlot(List<HostAndPort> masters, Map<HostAndPort, RedisClusterTerminal> clients, Notify notify) {
 		message(notify, ">> AssignSlot Start ... ");
 		int slotSize = 16384 / masters.size();
 		for (int i = 0; i < masters.size(); i++) {
@@ -71,7 +71,7 @@ public class RedisClusterUtil {
 				end = 16384;
 			}
 			HostAndPort master = masters.get(i);
-			RedisClusterClient cluster = clients.get(master);
+			RedisClusterTerminal cluster = clients.get(master);
 			message(notify, ">> assignSlot from " + start + " to " + end + " with " + master);
 			for(;start < end; start++) {
 				if(start % 1000 == 0){

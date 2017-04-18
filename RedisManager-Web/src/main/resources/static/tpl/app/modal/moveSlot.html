@@ -1,0 +1,31 @@
+<div class="modal-header">
+	<button type="button" class="close" ng-click="closeModal()">&times;</button>
+    <h3 class="modal-title">Add Cluster Monitor</h3>
+</div>
+<div class="modal-body">
+	<form class="form-horizontal" name ="siteform" method="get" novalidate>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Slot Start</label>
+			<div class="col-sm-9">
+				<input type="number" name="start" class="form-control" ng-model="modalModel.start" placeholder="slot start" required>                     
+				<span style="color:red" ng-show="siteform.start.$dirty && siteform.start.$invalid">
+					<span ng-show="siteform.start.$error.required">slot start is required</span>
+				</span>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Slot End</label>
+			<div class="col-sm-9">
+				<input type="number" name="end" class="form-control" ng-model="modalModel.end" placeholder="slot end" required>                     
+				<span style="color:red" ng-show="siteform.end.$dirty && siteform.end.$invalid">
+					<span ng-show="siteform.end.$error.required">slot end is required</span>
+				</span>
+			</div>
+		</div>
+        
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-disabled="siteform.$invalid" ng-click="ok()">OK</button>
+</div>

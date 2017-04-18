@@ -39,4 +39,12 @@ public class ClusterManagerController extends BaseController{
 		}
 		return SUCCESS();
 	}
+	
+	
+	@RequestMapping(value = "/slot/move/{cluster}/{node}/{start}/{end}", method = RequestMethod.POST)
+	@ResponseBody
+	public Object slot_move(@PathVariable String cluster) throws Exception {
+		
+		return SUCCESS();
+	}
 }

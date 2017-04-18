@@ -43,9 +43,11 @@ public class ClusterNodeConvert extends Convert<List<M_clusterNode>>{
 				while (line.length > i) {
 					M_Slot slot = new M_Slot();
 					String[] slot_t = line[i].split("-");
-					slot.setStart(Integer.valueOf(slot_t[0]));
-					slot.setEnd(Integer.valueOf(slot_t[1]));
-					slots.add(slot);
+					if(slot_t.length == 2){
+						slot.setStart(Integer.valueOf(slot_t[0]));
+						slot.setEnd(Integer.valueOf(slot_t[1]));
+						slots.add(slot);
+					}
 					i++;
 				}
 				clusterNode.setSlots(slots);

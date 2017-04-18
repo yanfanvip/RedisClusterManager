@@ -4,16 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import javax.annotation.PostConstruct;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import com.newegg.redis.cluster.RedisClusterClient;
+
+import com.newegg.redis.cluster.RedisClusterTerminal;
 import com.newegg.redis.context.AppConfig;
 import com.newegg.redis.leveldb.D_ClusterInfo;
 import com.newegg.redis.leveldb.D_RedisClusterNode;
@@ -92,9 +91,9 @@ public class MonitorRedis {
 	 */
 	private void updateClusterInfo(D_ClusterInfo old_ClusterInfo , List<D_RedisClusterNode> nodes) throws Exception{
 		D_RedisClusterNode node = randomOne(nodes);
-		RedisClusterClient client = null;
+		RedisClusterTerminal client = null;
 		try {
-			client = new RedisClusterClient(node.getHost(), node.getPort());
+			client = new RedisClusterTerminal(node.getHost(), node.getPort());
 			M_clusterInfo info = client.getClusterInfo();
 			D_ClusterInfo clusterInfo = new D_ClusterInfo();
 			BeanUtils.copyProperties(clusterInfo, old_ClusterInfo);
@@ -120,19 +119,19 @@ public class MonitorRedis {
 	 * @throws Exception
 	 */
 	private List<D_RedisClusterNode> getClusterNodes(D_ClusterInfo c) throws Exception{
-		RedisClusterClient client = null;
+		RedisClusterTerminal client = null;
 		try {
 			String cluster = c.getUuid();
 			List<D_RedisClusterNode> old_RedisClusterNodes = clusterNodeService.getAllClusterNodes(cluster);
 			List<D_RedisClusterNode> new_RedisClusterNodes = null;
 			if(old_RedisClusterNodes.size() > 0){
 				D_RedisClusterNode node = randomOne(old_RedisClusterNodes);
-				client = new RedisClusterClient(node.getHost(), node.getPort());
+				client = new RedisClusterTerminal(node.getHost(), node.getPort());
 				new_RedisClusterNodes = clusterNodeService.getClusterNodesByRedis(cluster, client);
 				clusterNodeService.addClusterNodes(cluster, new_RedisClusterNodes);
 				cluster_node_change(c, old_RedisClusterNodes, new_RedisClusterNodes);
 			}else{
-				client = new RedisClusterClient(c.getLast_read_host(), c.getLast_read_port());
+				client = new RedisClusterTerminal(c.getLast_read_host(), c.getLast_read_port());
 				new_RedisClusterNodes = clusterNodeService.getClusterNodesByRedis(cluster, client);
 				clusterNodeService.addClusterNodes(cluster, new_RedisClusterNodes);
 			}
@@ -150,9 +149,9 @@ public class MonitorRedis {
 	private void updateRedisInfoByClusterNodes(D_ClusterInfo c, List<D_RedisClusterNode> new_RedisClusterNodes) {
 		new_RedisClusterNodes.forEach(node->{
 			if(node.getStatus() == RedisNodeStatus.CONNECT){
-				RedisClusterClient client = null;
+				RedisClusterTerminal client = null;
 				try {
-					client = new RedisClusterClient(node.getHost(), node.getPort());
+					client = new RedisClusterTerminal(node.getHost(), node.getPort());
 					M_info m_info = client.getInfo();
 					D_RedisInfo info = new D_RedisInfo();
 					BeanUtils.copyProperties(info, m_info);
@@ -160,7 +159,9 @@ public class MonitorRedis {
 				} catch (Exception e) {
 					log.error("redis monitor by node [" + node + "] error", e);
 				} finally {
-					client.close();
+					if(client != null){
+						client.close();
+					}
 				}
 			}
 		});

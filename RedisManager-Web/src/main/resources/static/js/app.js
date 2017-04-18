@@ -11,5 +11,6 @@ angular.module('app', [
     'ui.validate',
     'toaster',
     'oc.lazyLoad',
-    'angular-echarts'
+    'angular-echarts',
+    'ngWebSocket'
 ]).controller('AppCtrl', function($scope) { });

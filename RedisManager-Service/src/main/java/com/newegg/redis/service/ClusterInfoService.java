@@ -8,7 +8,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import com.newegg.redis.cluster.RedisClusterClient;
+import com.newegg.redis.cluster.RedisClusterTerminal;
 import com.newegg.redis.context.AppConstants;
 import com.newegg.redis.exceptions.ParameterException;
 import com.newegg.redis.leveldb.D_ClusterInfo;
@@ -72,7 +72,7 @@ public class ClusterInfoService {
 	 * 从Redis中查询一个集群的信息
 	 * @return 
 	 */
-	public M_clusterInfo getClusterInfoByRedis(RedisClusterClient client) throws Exception{
+	public M_clusterInfo getClusterInfoByRedis(RedisClusterTerminal client) throws Exception{
 		return client.getClusterInfo();
 	}
 	

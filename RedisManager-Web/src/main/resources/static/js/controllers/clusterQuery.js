@@ -1,4 +1,4 @@
-app.controller('ClusterQueryCtrl', function($scope, $state, $stateParams, $http, $interval, $modal, $Popup) {
+app.controller('ClusterQueryCtrl', function($scope, $state, $stateParams, $http, $interval, $timeout, $modal, $Popup) {
     $scope.id = $stateParams.id;
     $scope.name = $stateParams.name;
 
@@ -25,7 +25,14 @@ app.controller('ClusterQueryCtrl', function($scope, $state, $stateParams, $http,
 				client : 0
 			}
     	}
+    	var loading = $modal.open({
+	        templateUrl: 'tpl/app/modal/loading.html'
+	    });
+		$timeout(function(){
+			loading.close();
+        },30000);
     	$http.post('query/scan/' + $scope.id, queryParam).success(function(response){
+    		loading.close();
     		lastPage = queryParam;
     		queryParam.cursor = response.cursor;
     		queryParam.client = response.client;
