@@ -17,5 +17,6 @@ public class WebSocketConfig extends SpringBootServletInitializer implements Web
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		registry.addHandler(slotMoveHandle, "/slot_move");
+		registry.addHandler(slotMoveHandle, "/command");
 	}
 }

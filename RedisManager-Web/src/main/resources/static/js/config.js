@@ -143,54 +143,67 @@ app.factory('$Popup', ['$q','$modal', function ($q, $modal) {
 
 app.factory('$console', ['$q','$compile','$modal', '$websocket', function ($q, $compile, $modal, $websocket) {
     return {
-    	show: function(title, websocket, message) {
+    	show: function(title, websocket, message, canCommand) {
 	        var deferred = $q.defer();
 	        var confirmModal = $modal.open({
 	          backdrop: 'static',
 	          windowClass: "terminalModal",
-	          template :  '<div class="m-c">\n'+
+	          	          template :  '<div class="m-c">\n'+
 				          '  <div class="modal-header">\n'+
 				          '    <h4 class="modal-title">{{title}}</h4>\n'+
 				          '  </div>\n'+
-				          '  <div class="modal-body"><div id="console" class="terminal"></div></div>\n'+
+				          '  <div class="modal-body terminal" id="modalbody">' + 
+				          '       <div id="console" />'+
+				          '		  <div ng-if="canCommand" class="commandInput">'+
+				          '		  	  <p>{{prompt}}</p>'+
+				          '       	  <textarea ng-model="command.input" ng-keypress="sendCommand($event, command.input)"></textarea>'+
+				          '		  </div>'+
+				          '  </div>\n'+
 				          '  <div class="modal-footer" style="text-align: center;">\n'+
 				          '    <button type="button" class="btn btn-primary" ng-click="ok()">OK</button>\n'+
 				          '  </div>\n'+
 				          '</div>\n',
 			  controller: function($scope, $modalInstance){
 				  $scope.title = title;
+				  $scope.canCommand = canCommand;
 				  $scope.ok = function () {
 					  $modalInstance.dismiss('cancel');
 			          deferred.resolve(true);
 		          };
-		          confirmModal.opened.then(function() {
-		          		var ws = $websocket('ws://'+document.location.host + websocket);
-						  ws.onOpen(function(){
-						  		ws.send(JSON.stringify(message));
-						  		var element = angular.element("#console");
-						  	  	element.append('<p class="log">command>' + websocket + " "+ JSON.stringify(message) + '</p>');
-						  	  	var top = element[0].scrollHeight - element[0].clientHeight + 100;
-							  	if(top > 0){
-							  		element[0].scrollTop = top;
-							  	}
-						  });
-						  ws.onMessage(function (message) {
-						  		var element = angular.element("#console");
-						  	  	element.append('<p class="log">log>' + message.data + '</p>');
-						  	  	var top = element[0].scrollHeight - element[0].clientHeight + 100;
-							  	if(top > 0){
-							  		element[0].scrollTop = top;
-							  	}
-						  });
-						  ws.onError(function(){
-						  		var element = angular.element("#console");
-						  	  	element.append('<p class="log">error>websocket error</p>');
-						  	  	var top = element[0].scrollHeight - element[0].clientHeight + 100;
-							  	if(top > 0){
-							  		element[0].scrollTop = top;
-							  	}
-						  })
-                  });
+		          if(!websocket){
+          			return;
+          		  }
+          		  var addMessage = function(message){
+		              	angular.element("#console").append('<p class="log">' +message + '</p>');
+				  	  	var element = angular.element("#modalbody");
+				  	  	var top = element[0].scrollHeight - element[0].clientHeight + 100;
+					  	if(top > 0){
+					  		element[0].scrollTop = top;
+					  	}
+	              }
+		          var ws = $websocket('ws://'+document.location.host + websocket);
+		          $scope.command = {}
+				  ws.onOpen(function(){
+						if(message != null){
+							ws.send(JSON.stringify(message));
+					  	  	addMessage('command>' + websocket + " "+ JSON.stringify(message));
+						}
+						$scope.prompt = "CONNECT>";
+						$scope.sendCommand = function (event, command) {
+						  	if(event.which === 13) {
+						  		addMessage('command>' + command);
+						  		ws.send(command);
+						  		$scope.command = {}
+						  		event.preventDefault();
+						  	}
+		                };
+				  });
+				  ws.onMessage(function (message) {
+					  	addMessage('log>' +message.data);
+				  });
+				  ws.onError(function(){
+				  		addMessage('error> websocket error');
+				  });
 			  }
 	        });
 	        return deferred.promise;

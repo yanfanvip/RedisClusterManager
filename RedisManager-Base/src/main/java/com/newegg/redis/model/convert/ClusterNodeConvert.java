@@ -28,7 +28,7 @@ public class ClusterNodeConvert extends Convert<List<M_clusterNode>>{
 			}else{
 				clusterNode.setMyself(false);
 			}
-			clusterNode.setRole(RedisClusterRole.valueOf(line[2].toUpperCase()));
+			clusterNode.setRole(RedisClusterRole.get(line[2].toUpperCase()));
 			if(!"-".equals(line[3])){
 				clusterNode.setMaster(line[3]);
 			}

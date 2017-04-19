@@ -15,10 +15,12 @@ import com.newegg.redis.leveldb.D_RedisClusterNode;
 import com.newegg.redis.leveldb.D_RedisInfo;
 import com.newegg.redis.model.ClusterServerCache;
 import com.newegg.redis.model.M_clusterInfo;
+import com.newegg.redis.model.enums.RedisNodeStatus;
 import com.newegg.redis.service.ClusterInfoService;
 import com.newegg.redis.service.ClusterNodeService;
 import com.newegg.redis.service.ComputerInfoService;
 import com.newegg.redis.service.RedisInfoService;
+import com.newegg.redis.util.ClusterTreeUtil;
 
 @RestController
 @RequestMapping("/info")
@@ -65,7 +67,23 @@ public class SystemInfoController extends BaseController{
 		if(!ClusterServerCache.clusterExist(cluster)){
 			return null;
 		}
-		return clusterNodeService.getAllClusterNodes(cluster);
+		List<D_RedisClusterNode> oldNodes = clusterNodeService.getAllClusterNodes(cluster);
+		for (D_RedisClusterNode n : oldNodes) {
+			if(n.getStatus() == RedisNodeStatus.CONNECT){
+				RedisClusterTerminal client = null;
+				try {
+					client = new RedisClusterTerminal(n.getHost(), n.getPort());
+					List<D_RedisClusterNode> list = clusterNodeService.getClusterNodesByRedis(cluster, client);
+					clusterNodeService.addClusterNodes(cluster, list);
+					return list;
+				} catch (Exception e) { }finally {
+					if(client != null){
+						client.close();
+					}
+				}
+			}
+		}
+		return oldNodes;
 	}
 	
 	@RequestMapping(value = "/cluster/tree/{cluster}", method = RequestMethod.GET)
@@ -74,7 +92,8 @@ public class SystemInfoController extends BaseController{
 		if(!ClusterServerCache.clusterExist(cluster)){
 			return null;
 		}
-		return clusterNodeService.getClusterTree(cluster);
+		List<D_RedisClusterNode> nodes = clusternodes(cluster);
+		return ClusterTreeUtil.getLevelTree(nodes);
 	}
 	
 	@RequestMapping(value = "/cluster/serverInfo/{cluster}", method = RequestMethod.GET)

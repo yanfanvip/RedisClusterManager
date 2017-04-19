@@ -34,7 +34,6 @@
 	              <td>{{master.master.slots}}</td>
 	              <td>
 	                  <button class="btn m-b-xs btn-sm btn-info btn-addon" ng-click="moveSlot(master.master)"><i class="fa fa-cubes"></i>Move Slots</button>
-	                  <button class="btn m-b-xs btn-sm btn-info btn-addon" ng-click="queryData(master.master)"><i class="fa fa-search"></i>Query Data</button>
 	              </td>
 	            </tr>
 	            <tr ng-if="master.slaves != null && master.slaves.length > 0">
@@ -54,6 +53,7 @@
 				              <td>
 				                  <button class="btn m-b-xs btn-sm btn-primary btn-addon" ng-click="moveSlave(slave)"><i class="fa fa-unlink"></i>Move Slave</button>
 	                  			  <button class="btn m-b-xs btn-sm btn-primary btn-addon" ng-click="toMaster(slave)"><i class="fa fa-random"></i>Be Master</button>
+	                  			  <button class="btn m-b-xs btn-sm btn-primary btn-addon" ng-click="delNode(slave)"><i class="fa fa-trash-o"></i>Delete</button>
 				              </td>
 				           </tr>
 		               </table>

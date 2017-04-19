@@ -5182,6 +5182,25 @@ a.text-#000000:hover {
   content: '$ ';
   color: #22da26;
 }
+.terminal .commandInput{
+	width:100%;
+	color: #ffffff;
+	background-color: transparent;
+    border: 0;
+    display: inline-flex;
+}
+.terminal .commandInput textarea{
+	width:100%;
+	padding-left:10px;
+	color: #ffffff;
+	background-color: transparent;
+    border: 0;
+    overflow-y:hidden;
+}
+.terminal .commandInput p{
+	min-width: 50px;
+	color: #22da26;
+}
 .terminal .log {
   white-space: normal;
   overflow: hidden;

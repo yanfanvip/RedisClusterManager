@@ -172,7 +172,7 @@ public class RedisClusterTerminal extends Jedis{
 	/**
 	 * 从该节点删除某个节点
 	 */
-	public void forget(String node) throws Exception{
+	public void forget(String node) {
 		clusterForget(node);
 		clusterSaveConfig();
 	}

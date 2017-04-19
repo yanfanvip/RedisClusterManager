@@ -10,6 +10,7 @@ import com.newegg.redis.leveldb.D_ClusterInfo;
 import com.newegg.redis.model.ClusterServerCache;
 import com.newegg.redis.monitor.MonitorRedis;
 import com.newegg.redis.service.ClusterInfoService;
+import com.newegg.redis.service.ClusterNodeService;
 
 @RestController
 @RequestMapping("/manager")
@@ -17,6 +18,9 @@ public class ClusterManagerController extends BaseController{
 
 	@Autowired
 	ClusterInfoService clusterInfoService;
+	
+	@Autowired
+	ClusterNodeService clusterNodeService;
 	
 	@Autowired
 	MonitorRedis monitor;
@@ -40,11 +44,30 @@ public class ClusterManagerController extends BaseController{
 		return SUCCESS();
 	}
 	
-	
-	@RequestMapping(value = "/slot/move/{cluster}/{node}/{start}/{end}", method = RequestMethod.POST)
+	@RequestMapping(value = "/cluster/{cluster}/tomaster/{node}", method = RequestMethod.POST)
 	@ResponseBody
-	public Object slot_move(@PathVariable String cluster) throws Exception {
-		
+	public Object tomaster(@PathVariable String cluster, @PathVariable String node) throws Exception {
+		if(ClusterServerCache.clusterExist(cluster)){
+			clusterNodeService.toMaster(cluster, node);
+		}
+		return SUCCESS();
+	}
+	
+	@RequestMapping(value = "/cluster/{cluster}/forget/{node}", method = RequestMethod.POST)
+	@ResponseBody
+	public Object forget(@PathVariable String cluster, @PathVariable String node) throws Exception {
+		if(ClusterServerCache.clusterExist(cluster)){
+			clusterNodeService.forget(cluster, node);
+		}
+		return SUCCESS();
+	}
+	
+	@RequestMapping(value = "/cluster/{cluster}/slaveof/{master}/{node}", method = RequestMethod.POST)
+	@ResponseBody
+	public Object slaveof(@PathVariable String cluster, @PathVariable String master, @PathVariable String node) throws Exception {
+		if(ClusterServerCache.clusterExist(cluster)){
+			clusterNodeService.slaveof(cluster, master, node);
+		}
 		return SUCCESS();
 	}
 }

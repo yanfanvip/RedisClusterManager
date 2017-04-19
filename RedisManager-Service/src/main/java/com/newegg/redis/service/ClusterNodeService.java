@@ -13,6 +13,7 @@ import com.newegg.redis.leveldb.D_ClusterNode_Tree;
 import com.newegg.redis.leveldb.D_RedisClusterNode;
 import com.newegg.redis.leveldb.LevelTable;
 import com.newegg.redis.model.M_clusterNode;
+import com.newegg.redis.model.enums.RedisNodeStatus;
 import com.newegg.redis.util.ClusterTreeUtil;
 
 @Service
@@ -75,16 +76,48 @@ public class ClusterNodeService {
 	public void toMaster(String cluster, String node) throws Exception{
 		Map<String, D_RedisClusterNode> nodes = getAllClusterNodeMap(cluster);
 		D_RedisClusterNode old_Slave = nodes.get(node);
-		D_RedisClusterNode old_Master = nodes.get(old_Slave.getMaster());
-		RedisClusterTerminal client = new RedisClusterTerminal(old_Master.getHost(), old_Master.getPort());
+		RedisClusterTerminal client = new RedisClusterTerminal(old_Slave.getHost(), old_Slave.getPort());
 		try {
-			client.slaveOf(node);
+			client.clusterFailover();
 		} finally {
 			client.close();
 		}
 	}
-	
-	public void moveSlot(int start, int end) throws Exception{
-		
+
+	/**
+	 * 从集群中删除节点
+	 */
+	public void forget(String cluster, String node) throws Exception {
+		List<D_RedisClusterNode> all = getAllClusterNodes(cluster);
+		for (D_RedisClusterNode n : all) {
+			if(!node.equals(n.getNode()) && n.getStatus() == RedisNodeStatus.CONNECT){
+				RedisClusterTerminal client=null;
+				try {
+					client = new RedisClusterTerminal(n.getHost(), n.getPort());
+					client.forget(node);
+					return;
+				}catch(Exception e){} finally {
+					if(client != null){
+						client.close();
+					}
+				}
+			}
+		}
+		throw new Exception("fail");
+	}
+
+	/**
+	 * 设置一个从节点的主节点
+	 * @throws Exception 
+	 */
+	public void slaveof(String cluster, String master, String node) throws Exception {
+		Map<String, D_RedisClusterNode> nodes = getAllClusterNodeMap(cluster);
+		D_RedisClusterNode slave_node = nodes.get(node);
+		RedisClusterTerminal client = new RedisClusterTerminal(slave_node.getHost(), slave_node.getPort());
+		try {
+			client.slaveOf(master);
+		} finally {
+			client.close();
+		}
 	}
 }

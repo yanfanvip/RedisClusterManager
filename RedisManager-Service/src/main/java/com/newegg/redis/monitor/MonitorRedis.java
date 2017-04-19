@@ -99,7 +99,7 @@ public class MonitorRedis {
 			BeanUtils.copyProperties(clusterInfo, old_ClusterInfo);
 			BeanUtils.copyProperties(clusterInfo, info);
 			clusterInfoService.updateClusterInfo(clusterInfo);
-			cluster_change(old_ClusterInfo, clusterInfo);
+			//cluster_change(old_ClusterInfo, clusterInfo);
 		}catch(Exception e){
 			log.error("redis monitor by cluster error", e);
 		} finally {
@@ -129,7 +129,7 @@ public class MonitorRedis {
 				client = new RedisClusterTerminal(node.getHost(), node.getPort());
 				new_RedisClusterNodes = clusterNodeService.getClusterNodesByRedis(cluster, client);
 				clusterNodeService.addClusterNodes(cluster, new_RedisClusterNodes);
-				cluster_node_change(c, old_RedisClusterNodes, new_RedisClusterNodes);
+				//cluster_node_change(c, old_RedisClusterNodes, new_RedisClusterNodes);
 			}else{
 				client = new RedisClusterTerminal(c.getLast_read_host(), c.getLast_read_port());
 				new_RedisClusterNodes = clusterNodeService.getClusterNodesByRedis(cluster, client);
@@ -167,19 +167,19 @@ public class MonitorRedis {
 		});
 	}
 	
-	/**
-	 * 集群变化
-	 */
-	private void cluster_change(D_ClusterInfo old_data, D_ClusterInfo new_data){
-		
-	}
-
-	/**
-	 * 集群节点变化
-	 */
-	private void cluster_node_change(D_ClusterInfo cluster, List<D_RedisClusterNode> old_data, List<D_RedisClusterNode> new_data){
-		
-	}
+//	/**
+//	 * 集群变化
+//	 */
+//	private void cluster_change(D_ClusterInfo old_data, D_ClusterInfo new_data){
+//		
+//	}
+//
+//	/**
+//	 * 集群节点变化
+//	 */
+//	private void cluster_node_change(D_ClusterInfo cluster, List<D_RedisClusterNode> old_data, List<D_RedisClusterNode> new_data){
+//		
+//	}
 
 	/**
 	 * 随机返回一个状态正常的节点

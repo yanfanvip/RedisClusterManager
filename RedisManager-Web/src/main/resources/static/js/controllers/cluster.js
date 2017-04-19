@@ -6,10 +6,13 @@ app.controller('ClusterCtrl', function($scope, $state, $stateParams, $q, $http, 
         tooltip: {
             show: true,
             formatter: function (data) {
-                return '<div style="text-center"><span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:'+ data.color +'"></span>'+ data.name+'</div>';
+            	var name = data.name;
+            	if(data.data.value){
+            		name = data.data.value.host + ":" + data.data.value.port;
+            	}
+                return '<div style="text-center"><span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:'+ data.color +'"></span>'+ name +'</div>';
             }
-        },
-        animation: false
+        }
     };
 
     var series = {
@@ -17,7 +20,7 @@ app.controller('ClusterCtrl', function($scope, $state, $stateParams, $q, $http, 
         layout: 'force',
         focusNodeAdjacency : true,
         roam : 'scale',
-        label: { normal: { show: true, position:'bottom'}},
+        label: { emphasis: { show: true, position:'bottom'}},
         force: { repulsion: 300 }
     }
     var status_ok = "#090";
@@ -103,23 +106,29 @@ app.controller('ClusterCtrl', function($scope, $state, $stateParams, $q, $http, 
             $scope.changeComputer(selectedComputers);
         });
         
-    	$q.all([$http.get("info/cluster/info/" + $scope.id), $http.get("info/cluster/tree/" + $scope.id)]).then(function(datas){
+    	$q.all([
+    		$http.get("info/cluster/info/" + $scope.id), 
+    		$http.get("info/cluster/tree/" + $scope.id)]
+    	).then(function(datas){
     		 var clusterInfo = datas[0].data;
     		 var response = datas[1].data;
-    		 
+    		 var tooltip = {
+    		 	formatter : function(data){
+    		 		console.log(data);
+    		 	}
+    		 }
     		 series.data= [];
          	 series.links = [];
              series.data.push({name: 'Cluster', symbolSize:60, itemStyle: { normal:{color: clusterInfo.cluster_state=='ok'?status_ok:status_fail}}} );
              response.masters.forEach(function(data){
-                 var master = data.master.host + ":" + data.master.port;
-                 series.data.push({name: master, symbolSize:40, tooltip:{}, itemStyle: { normal:{color: data.master.status==='CONNECT'?status_ok:status_fail}}});
-                 series.links.push({source: 'Cluster', target: master});
+                 series.data.push({name: data.master.node, value: data.master, symbolSize:40, itemStyle: { normal:{color: data.master.status==='CONNECT'?status_ok:status_fail}}});
+                 series.links.push({source: 'Cluster', target: data.master.node});
                  data.slaves.forEach(function(s){
-                     var slave = s.host + ":" + s.port;
-                     series.data.push({name: slave, symbolSize:30, tooltip:{}, itemStyle: { normal:{color:  s.status==='CONNECT'?status_ok:status_fail}}});
-                     series.links.push({source: master, target: slave});
+                     series.data.push({name: s.node, value : s , symbolSize:30, itemStyle: { normal:{color:  s.status==='CONNECT'?status_ok:status_fail}}});
+                     series.links.push({source: data.master.node, target: s.node});
                  });
              });
+             console.log(series);
              $scope.clusterDatas = series;
     	});
     }

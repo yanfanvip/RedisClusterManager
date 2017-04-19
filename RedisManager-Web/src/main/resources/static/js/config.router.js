@@ -22,6 +22,27 @@ angular.module('app').config(['$stateProvider', '$urlRouterProvider', function (
                       }]
                   }
               })
+             .state('app.install', {
+                  url: '/install',
+                  templateUrl: 'tpl/app/install.html',
+                  resolve: {
+                    deps: ['$ocLazyLoad',
+                      function( $ocLazyLoad ){
+                        return $ocLazyLoad.load(['js/controllers/install.js']);
+                      }]
+                  }
+              })
+              .state('app.import', {
+                  url: '/import',
+                  templateUrl: 'tpl/app/import.html',
+                  resolve: {
+                    deps: ['$ocLazyLoad',
+                      function( $ocLazyLoad ){
+                        return $ocLazyLoad.load(['js/controllers/import.js']);
+                      }]
+                  }
+              })
+              
               .state('app.cluster', {
                   url: '/cluster/:id?name',
                   templateUrl: 'tpl/app/cluster.html',
