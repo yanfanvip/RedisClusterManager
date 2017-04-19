@@ -8,9 +8,9 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 @SpringBootApplication
 @ComponentScan("com.newegg.redis.**")
 @EnableWebSocket
-public class AppStarter {
+public class ServiceStarter {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AppStarter.class, args);
+		SpringApplication.run(ServiceStarter.class, args);
 	}
 }

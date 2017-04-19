@@ -1,10 +1,11 @@
-<assembly>
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
     <id>bin</id>
-    <!-- 最终打包成一个用于发布的zip文件 -->
     <formats>
         <format>tar.gz</format>
     </formats>
-
+    
     <fileSets>
     	<!-- 把项目相关jar包，打包进zip文件的根目录 -->
         <fileSet>
