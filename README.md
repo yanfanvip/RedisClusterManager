@@ -1,4 +1,5 @@
 本项目是Redis Cluster集群的管理工具;
+项目地址 ： https://git.oschina.net/yanfanVIP/RedisClusterManager
 
 基于Java开发，数据库采用了嵌入式Leveldb, 方便部署。
 项目的主要功能有以下几点：
