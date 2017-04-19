@@ -22,35 +22,9 @@
 </div>
  <!-- / navbar -->
 
- <!-- menu -->
-<div class="app-aside hidden-xs bg-light dker b-r">
-  <div class="aside-wrap">
-    <div class="navi-wrap">
-      <nav ui-nav class="navi">
-        <ul class="nav">
-          <li ui-sref-active="active">
-            <a ui-sref="app.install">
-              <i class="fa fa-asl-interpreting icon text-info-dker"></i>
-              <span class="font-bold">Cluster Create</span>
-            </a>
-          </li>
-          <li ui-sref-active="active">
-            <a ui-sref="app.version">
-              <i class="fa fa-cloud-upload icon text-info-dker"></i>
-              <span class="font-bold">Redis Import</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </div>
-</div>
- <!-- / menu -->
 
  <!-- content -->
- <div class="app-content">
+ <div class="app-content" style="margin:0;">
     <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
-   <div ui-butterbar></div>
-   <a href class="off-screen-toggle hide" ui-toggle-class="off-screen" data-target=".app-aside" ></a>
    <div class="app-content-body fade-in-up" ui-view></div>
  </div>

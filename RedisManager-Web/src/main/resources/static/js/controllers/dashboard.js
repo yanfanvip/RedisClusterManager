@@ -32,6 +32,10 @@ app.controller('DashboardCtrl', function($scope, $state, $http, $modal, $interva
 	    });
     }
     
+    $scope.create = function(){
+    	$state.go('app.install');
+    }
+    
     initData();
     
     var timer = $interval(function(){
