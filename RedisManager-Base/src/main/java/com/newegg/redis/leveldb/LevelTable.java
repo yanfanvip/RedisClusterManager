@@ -46,6 +46,9 @@ public class LevelTable {
 		}
 		DB db = null;
 		File home = new File(path);
+		if(!home.exists()){
+			home.mkdirs();
+		}
 		try {
 			db = JniDBFactory.factory.open(home, options);
 		} catch (Exception e) {

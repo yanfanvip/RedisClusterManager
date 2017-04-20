@@ -148,6 +148,9 @@ public class MonitorUtil {
 	 */
 	public static double combinedSwap() throws SigarException{
 		long total = totalSwap();
+		if(total == 0){
+			return 0;
+		}
 		long free = freeSwap();
 		long used = total - free;
 		return ((long)(used * 10000 / total)) / 100.00;
