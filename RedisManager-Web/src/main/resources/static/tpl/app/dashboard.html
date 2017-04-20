@@ -14,7 +14,7 @@
       <div class="col-xs-3" ng-repeat="cluster in clusters">
         <a style="height:150px" ng-click="openCluster(cluster)" class="block panel padder-s item" ng-class="{true: 'bg-info', false: 'bg-danger'}[cluster.cluster_state == 'ok']">
           <span class="text-white font-thin h1 block">{{cluster.name}}</span>
-          <span class="text-white font-thin h3 block">Nodes: {{cluster.cluster_known_nodes}}  MasterSize: {{cluster.cluster_size}}</span>
+          <span class="text-white font-thin h3 block">Know Nodes: {{cluster.cluster_known_nodes}}  Cluster Size: {{cluster.cluster_size}}</span>
           <span class="text-muted text-xs">ClusterID: {{cluster.uuid}}</span>
           <span class="bottom text-right w-full">
               <i class="fa fa-area-chart text-muted m-r-sm"></i>

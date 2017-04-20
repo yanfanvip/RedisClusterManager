@@ -102,4 +102,18 @@ public class ClusterInfoService {
 	public List<D_ClusterInfo> getAll() throws IOException {
 		return LevelTable.getAll(AppConstants.LEVEL_DATABASES_SYSTEM, D_ClusterInfo.class);
 	}
+
+	/**
+	 * 向集群中添加节点
+	 */
+	public void addNode(String cluster, String host, int port) throws Exception {
+		D_ClusterInfo clusterInfo = getClusterInfo(cluster);
+		RedisClusterTerminal clusterTerminal = new RedisClusterTerminal(host, port);
+		try {
+			clusterTerminal.clusterMeet(clusterInfo.getLast_read_host(), clusterInfo.getLast_read_port());
+			clusterTerminal.clusterSaveConfig();
+		} finally {
+			clusterTerminal.close();
+		}
+	}
 }

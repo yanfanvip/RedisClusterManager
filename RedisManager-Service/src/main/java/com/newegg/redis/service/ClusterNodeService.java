@@ -88,22 +88,22 @@ public class ClusterNodeService {
 	 * 从集群中删除节点
 	 */
 	public void forget(String cluster, String node) throws Exception {
-		List<D_RedisClusterNode> all = getAllClusterNodes(cluster);
-		for (D_RedisClusterNode n : all) {
+		Map<String, D_RedisClusterNode> nodes = getAllClusterNodeMap(cluster);
+		D_RedisClusterNode fnode = nodes.get(node);
+		if(fnode != null){
+			new RedisClusterTerminal(fnode.getHost(), fnode.getPort()).reset().close();
+		}
+		for (D_RedisClusterNode n : nodes.values()) {
 			if(!node.equals(n.getNode()) && n.getStatus() == RedisNodeStatus.CONNECT){
-				RedisClusterTerminal client=null;
+				RedisClusterTerminal client = new RedisClusterTerminal(n.getHost(), n.getPort());
 				try {
-					client = new RedisClusterTerminal(n.getHost(), n.getPort());
 					client.forget(node);
-					return;
+					client.clusterSaveConfig();
 				}catch(Exception e){} finally {
-					if(client != null){
-						client.close();
-					}
+					client.close();
 				}
 			}
 		}
-		throw new Exception("fail");
 	}
 
 	/**

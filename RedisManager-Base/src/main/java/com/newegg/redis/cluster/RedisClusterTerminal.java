@@ -145,9 +145,9 @@ public class RedisClusterTerminal extends Jedis{
 				message(">>start move data");
 				List<String> keys;
 				do {
-					keys = source.clusterGetKeysInSlot(slot, 1000);
+					keys = source.clusterGetKeysInSlot(slot, 100);
 					for (String key : keys) {
-						migrate(sourceNode.getHost(), sourceNode.getPort(), key, 0, 60000);
+						source.migrate(myself.getHost(), myself.getPort(), key, 0, 60000);
 					}
 				} while(keys.size() > 0);
 			}catch(Exception e){
@@ -160,7 +160,7 @@ public class RedisClusterTerminal extends Jedis{
 		}
 		clusterSetSlotNode(slot, myself.getNode());
 	}
-	
+
 	/**
 	 * 将当前结点设置为指定节点的从节点
 	 */

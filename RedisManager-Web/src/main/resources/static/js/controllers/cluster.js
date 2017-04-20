@@ -1,4 +1,4 @@
-app.controller('ClusterCtrl', function($scope, $state, $stateParams, $q, $http, $Popup, $interval) {
+app.controller('ClusterCtrl', function($scope, $state, $stateParams, $q, $http, $modal, $Popup, $interval) {
     $scope.id = $stateParams.id;
     $scope.name = $stateParams.name;
 
@@ -112,11 +112,6 @@ app.controller('ClusterCtrl', function($scope, $state, $stateParams, $q, $http, 
     	).then(function(datas){
     		 var clusterInfo = datas[0].data;
     		 var response = datas[1].data;
-    		 var tooltip = {
-    		 	formatter : function(data){
-    		 		console.log(data);
-    		 	}
-    		 }
     		 series.data= [];
          	 series.links = [];
              series.data.push({name: 'Cluster', symbolSize:60, itemStyle: { normal:{color: clusterInfo.cluster_state=='ok'?status_ok:status_fail}}} );
@@ -128,7 +123,6 @@ app.controller('ClusterCtrl', function($scope, $state, $stateParams, $q, $http, 
                      series.links.push({source: data.master.node, target: s.node});
                  });
              });
-             console.log(series);
              $scope.clusterDatas = series;
     	});
     }

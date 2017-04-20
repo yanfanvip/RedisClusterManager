@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.newegg.redis.leveldb.D_ClusterInfo;
@@ -40,6 +41,15 @@ public class ClusterManagerController extends BaseController{
 		if(ClusterServerCache.clusterExist(cluster)){
 			clusterInfoService.delete(cluster);
 			ClusterServerCache.deleteCluster(cluster);
+		}
+		return SUCCESS();
+	}
+	
+	@RequestMapping(value = "/cluster/addNode/{cluster}", method = RequestMethod.POST)
+	@ResponseBody
+	public Object addNode(@PathVariable String cluster, @RequestParam String host, @RequestParam int port) throws Exception {
+		if(ClusterServerCache.clusterExist(cluster)){
+			clusterInfoService.addNode(cluster, host, port);
 		}
 		return SUCCESS();
 	}

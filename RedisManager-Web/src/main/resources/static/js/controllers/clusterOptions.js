@@ -89,5 +89,26 @@ app.controller('ClusterOptionsCtrl', function($scope, $state, $stateParams, $htt
     	})
     }
     
+    $scope.addNode = function(){
+    	$scope.modalModel = {}
+    	var modalInstance = $modal.open({
+	        templateUrl: 'tpl/app/modal/addNode.html',
+	        scope : $scope
+	    });
+	    modalInstance.opened.then(function(){
+	    	$scope.ok = function () {
+	    		modalInstance.close();
+	    		$http.post('manager/cluster/addNode/' + $scope.id,{host:$scope.modalModel.host,port:$scope.modalModel.port}).success(function(response){
+    				if(response.status){
+    					initData();
+    				}
+    	        });
+		    };
+		    $scope.closeModal = function(){
+		    	modalInstance.close();
+		    }
+	    });
+    }
+    
     initData();
 });
