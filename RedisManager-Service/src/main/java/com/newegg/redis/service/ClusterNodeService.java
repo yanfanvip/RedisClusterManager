@@ -4,16 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-
 import com.newegg.redis.cluster.RedisClusterTerminal;
 import com.newegg.redis.leveldb.D_ClusterNode_Tree;
 import com.newegg.redis.leveldb.D_RedisClusterNode;
 import com.newegg.redis.leveldb.LevelTable;
 import com.newegg.redis.model.M_clusterNode;
 import com.newegg.redis.model.enums.RedisNodeStatus;
+import com.newegg.redis.util.BeanUtils;
 import com.newegg.redis.util.ClusterTreeUtil;
 
 @Service
@@ -35,7 +34,7 @@ public class ClusterNodeService {
 		List<D_RedisClusterNode> clusterNodes = new ArrayList<D_RedisClusterNode>();
 		for (M_clusterNode n : nodes) {
 			D_RedisClusterNode clusterNode = new D_RedisClusterNode();
-			BeanUtils.copyProperties(clusterNode, n);
+			BeanUtils.copyNotNullProperties(clusterNode, n);
 			clusterNodes.add(clusterNode);
 		}
 		return clusterNodes;

@@ -18,7 +18,7 @@ public class QueryController extends BaseController{
 	@Autowired
 	QueryService queryService;
 
-	@RequestMapping(value = "/scan/{cluster}", method = RequestMethod.POST)
+	@RequestMapping(value = "/scan/{cluster:.+}", method = RequestMethod.POST)
 	@ResponseBody
 	public Object scan(@PathVariable String cluster, ScanPage page) throws Exception {
 		if(!ClusterServerCache.clusterExist(cluster)){
@@ -27,7 +27,7 @@ public class QueryController extends BaseController{
 		return queryService.scan(cluster, page);
 	}
 	
-	@RequestMapping(value = "/get/{cluster}/{key}", method = RequestMethod.GET)
+	@RequestMapping(value = "/get/{cluster}/{key:.+}", method = RequestMethod.GET)
 	@ResponseBody
 	public Object get(@PathVariable String cluster, @PathVariable String key) throws Exception {
 		if(!ClusterServerCache.clusterExist(cluster)){
@@ -36,7 +36,7 @@ public class QueryController extends BaseController{
 		return SUCCESS(queryService.get(cluster, key));
 	}
 	
-	@RequestMapping(value = "/delete/{cluster}/{key}", method = RequestMethod.POST)
+	@RequestMapping(value = "/delete/{cluster}/{key:.+}", method = RequestMethod.POST)
 	@ResponseBody
 	public Object delete(@PathVariable String cluster, @PathVariable String key) throws Exception {
 		if(!ClusterServerCache.clusterExist(cluster)){

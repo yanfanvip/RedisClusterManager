@@ -1,0 +1,40 @@
+<div ng-controller="ImportServerCtrl">
+  <div class="bg-light lter b-b wrapper-md row">
+      <div class="col-sm-6">
+	  	  <h1 class="m-n font-thin h3">Redis Server</h1>
+	  </div>
+	  <div class="col-sm-6 text-right hidden-xs">
+	  	  <button class="btn m-b-xs btn-sm btn-success btn-addon" ng-click="add()"><i class="fa fa-plus"></i>Add Redis Server</button>
+	  </div>
+  </div>
+  <div class="wrapper-md text-center">
+  
+		<div class="panel panel-default">
+	        <table class="table table-striped m-b-none text-center">
+	          <thead>
+	            <tr>
+	            	<th class="text-center" style="width:50px;">Index</th>
+	            	<th class="text-center" style="width:300px;">Hostname</th>
+	            	<th class="text-center" style="width:300px;">HostAddress</th>
+	              	<th class="text-center" style="width:200px;">User</th>
+	              	<th class="text-center" style="width:500px;">Workpath</th>
+	              	<th class="text-center">Options</th>
+	            </tr>
+	          </thead>
+	          <tbody ng-repeat="server in servers">
+	            <tr>                 
+	              <td>{{$index + 1}}</td>
+	              <td>{{server.hostname}}</td>
+	              <td>{{server.ip}}</td>
+	              <td>{{server.userName}}</td>
+	              <td>{{server.workhome}}</td>
+	              <td>
+	              	  <button class="btn m-b-xs btn-sm btn-info btn-addon" ng-click="add(server)"><i class="fa  fa-edit"></i>Edit</button>
+	              </td>
+	            </tr>
+	          </tbody>
+	        </table>
+	    </div>
+	    
+  </div>
+</div>

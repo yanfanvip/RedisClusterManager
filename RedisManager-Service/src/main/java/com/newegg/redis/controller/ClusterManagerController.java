@@ -35,7 +35,7 @@ public class ClusterManagerController extends BaseController{
 		return SUCCESS(clusterInfo.getUuid());
 	}
 	
-	@RequestMapping(value = "/cluster/delete/{cluster}", method = RequestMethod.POST)
+	@RequestMapping(value = "/cluster/delete/{cluster:.+}", method = RequestMethod.POST)
 	@ResponseBody
 	public Object cluster_delete(@PathVariable String cluster) throws Exception {
 		if(ClusterServerCache.clusterExist(cluster)){
@@ -45,7 +45,7 @@ public class ClusterManagerController extends BaseController{
 		return SUCCESS();
 	}
 	
-	@RequestMapping(value = "/cluster/addNode/{cluster}", method = RequestMethod.POST)
+	@RequestMapping(value = "/cluster/addNode/{cluster:.+}", method = RequestMethod.POST)
 	@ResponseBody
 	public Object addNode(@PathVariable String cluster, @RequestParam String host, @RequestParam int port) throws Exception {
 		if(ClusterServerCache.clusterExist(cluster)){
@@ -54,7 +54,7 @@ public class ClusterManagerController extends BaseController{
 		return SUCCESS();
 	}
 	
-	@RequestMapping(value = "/cluster/{cluster}/tomaster/{node}", method = RequestMethod.POST)
+	@RequestMapping(value = "/cluster/{cluster}/tomaster/{node:.+}", method = RequestMethod.POST)
 	@ResponseBody
 	public Object tomaster(@PathVariable String cluster, @PathVariable String node) throws Exception {
 		if(ClusterServerCache.clusterExist(cluster)){
@@ -63,7 +63,7 @@ public class ClusterManagerController extends BaseController{
 		return SUCCESS();
 	}
 	
-	@RequestMapping(value = "/cluster/{cluster}/forget/{node}", method = RequestMethod.POST)
+	@RequestMapping(value = "/cluster/{cluster}/forget/{node:.+}", method = RequestMethod.POST)
 	@ResponseBody
 	public Object forget(@PathVariable String cluster, @PathVariable String node) throws Exception {
 		if(ClusterServerCache.clusterExist(cluster)){
@@ -72,7 +72,7 @@ public class ClusterManagerController extends BaseController{
 		return SUCCESS();
 	}
 	
-	@RequestMapping(value = "/cluster/{cluster}/slaveof/{master}/{node}", method = RequestMethod.POST)
+	@RequestMapping(value = "/cluster/{cluster}/slaveof/{master}/{node:.+}", method = RequestMethod.POST)
 	@ResponseBody
 	public Object slaveof(@PathVariable String cluster, @PathVariable String master, @PathVariable String node) throws Exception {
 		if(ClusterServerCache.clusterExist(cluster)){

@@ -44,7 +44,7 @@ public class SystemInfoController extends BaseController{
 		return clusterInfoService.getAll();
 	}
 	
-	@RequestMapping(value = "/cluster/info/{cluster}", method = RequestMethod.GET)
+	@RequestMapping(value = "/cluster/info/{cluster:.+}", method = RequestMethod.GET)
 	@ResponseBody
 	public D_ClusterInfo cluster(@PathVariable String cluster) throws Exception {
 		if(!ClusterServerCache.clusterExist(cluster)){
@@ -61,7 +61,7 @@ public class SystemInfoController extends BaseController{
 		return info;
 	}
 	
-	@RequestMapping(value = "/cluster/nodes/{cluster}", method = RequestMethod.GET)
+	@RequestMapping(value = "/cluster/nodes/{cluster:.+}", method = RequestMethod.GET)
 	@ResponseBody
 	public List<D_RedisClusterNode> clusternodes(@PathVariable String cluster) throws Exception {
 		if(!ClusterServerCache.clusterExist(cluster)){
@@ -86,7 +86,7 @@ public class SystemInfoController extends BaseController{
 		return oldNodes;
 	}
 	
-	@RequestMapping(value = "/cluster/tree/{cluster}", method = RequestMethod.GET)
+	@RequestMapping(value = "/cluster/tree/{cluster:.+}", method = RequestMethod.GET)
 	@ResponseBody
 	public D_ClusterNode_Tree clustetree(@PathVariable String cluster) throws Exception {
 		if(!ClusterServerCache.clusterExist(cluster)){
@@ -96,7 +96,7 @@ public class SystemInfoController extends BaseController{
 		return ClusterTreeUtil.getLevelTree(nodes);
 	}
 	
-	@RequestMapping(value = "/cluster/serverInfo/{cluster}", method = RequestMethod.GET)
+	@RequestMapping(value = "/cluster/serverInfo/{cluster:.+}", method = RequestMethod.GET)
 	@ResponseBody
 	public List<D_ComputerInfo> serverInfo(@PathVariable String cluster) throws Exception {
 		if(!ClusterServerCache.clusterExist(cluster)){
@@ -105,7 +105,7 @@ public class SystemInfoController extends BaseController{
 		return computerInfoService.getAll(cluster);
 	}
 	
-	@RequestMapping(value = "/cluster/redisInfo/{cluster}", method = RequestMethod.GET)
+	@RequestMapping(value = "/cluster/redisInfo/{cluster:.+}", method = RequestMethod.GET)
 	@ResponseBody
 	public List<D_RedisInfo> redisInfo(@PathVariable String cluster) throws Exception {
 		if(!ClusterServerCache.clusterExist(cluster)){

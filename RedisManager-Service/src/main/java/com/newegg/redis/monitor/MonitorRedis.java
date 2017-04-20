@@ -5,13 +5,11 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.annotation.PostConstruct;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
 import com.newegg.redis.cluster.RedisClusterTerminal;
 import com.newegg.redis.context.AppConfig;
 import com.newegg.redis.leveldb.D_ClusterInfo;
@@ -24,6 +22,7 @@ import com.newegg.redis.model.enums.RedisNodeStatus;
 import com.newegg.redis.service.ClusterInfoService;
 import com.newegg.redis.service.ClusterNodeService;
 import com.newegg.redis.service.RedisInfoService;
+import com.newegg.redis.util.BeanUtils;
 import com.newegg.redis.util.RandomUtil;
 
 @Component
@@ -96,8 +95,8 @@ public class MonitorRedis {
 			client = new RedisClusterTerminal(node.getHost(), node.getPort());
 			M_clusterInfo info = client.getClusterInfo();
 			D_ClusterInfo clusterInfo = new D_ClusterInfo();
-			BeanUtils.copyProperties(clusterInfo, old_ClusterInfo);
-			BeanUtils.copyProperties(clusterInfo, info);
+			BeanUtils.copyNotNullProperties(clusterInfo, old_ClusterInfo);
+			BeanUtils.copyNotNullProperties(clusterInfo, info);
 			clusterInfoService.updateClusterInfo(clusterInfo);
 			//cluster_change(old_ClusterInfo, clusterInfo);
 		}catch(Exception e){
@@ -154,7 +153,7 @@ public class MonitorRedis {
 					client = new RedisClusterTerminal(node.getHost(), node.getPort());
 					M_info m_info = client.getInfo();
 					D_RedisInfo info = new D_RedisInfo();
-					BeanUtils.copyProperties(info, m_info);
+					BeanUtils.copyNotNullProperties(info, m_info);
 					RedisInfoService.addRedisInfo(c, info);
 				} catch (Exception e) {
 					log.error("redis monitor by node [" + node + "] error", e);

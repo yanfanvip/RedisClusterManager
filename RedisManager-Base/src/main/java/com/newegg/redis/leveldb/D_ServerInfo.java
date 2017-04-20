@@ -1,7 +1,5 @@
 package com.newegg.redis.leveldb;
 
-import com.newegg.redis.model.enums.RedisServerStatus;
-
 /**
  * Redis服务
  */
@@ -10,7 +8,7 @@ public class D_ServerInfo extends D_Level{
 
 	@Override
 	String key() {
-		return ip + ":" + port;
+		return ip;
 	}
 
 	/**
@@ -21,10 +19,6 @@ public class D_ServerInfo extends D_Level{
 	 * hostname
 	 */
 	private String hostname;
-	/**
-	 * port
-	 */
-	private String port;
 	/**
 	 * 机器登陆名称
 	 */
@@ -37,10 +31,6 @@ public class D_ServerInfo extends D_Level{
 	 * 工作空间
 	 */
 	private String workhome;
-	/**
-	 * 服务状态
-	 */
-	private RedisServerStatus status;
 
 	public String getIp() {
 		return ip;
@@ -53,12 +43,6 @@ public class D_ServerInfo extends D_Level{
 	}
 	public void setHostname(String hostname) {
 		this.hostname = hostname;
-	}
-	public String getPort() {
-		return port;
-	}
-	public void setPort(String port) {
-		this.port = port;
 	}
 	public String getUserName() {
 		return userName;
@@ -78,11 +62,4 @@ public class D_ServerInfo extends D_Level{
 	public void setWorkhome(String workhome) {
 		this.workhome = workhome;
 	}
-	public RedisServerStatus getStatus() {
-		return status;
-	}
-	public void setStatus(RedisServerStatus status) {
-		this.status = status;
-	}
-	
 }

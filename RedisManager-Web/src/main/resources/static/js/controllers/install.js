@@ -1,7 +1,10 @@
 app.controller('InstallCtrl', function($scope, $state, $http, $modal, $interval) {
 
-	$scope.import = function(){
-    	$state.go('app.import');
+	$scope.importVersion = function(){
+    	$state.go('app.importVersion');
     }
     
+    $scope.importServer = function(){
+    	$state.go('app.importServer');
+    }
 });

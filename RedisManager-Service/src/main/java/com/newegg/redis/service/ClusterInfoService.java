@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -17,6 +16,7 @@ import com.newegg.redis.leveldb.D_RedisClusterNode;
 import com.newegg.redis.leveldb.D_RedisInfo;
 import com.newegg.redis.leveldb.LevelTable;
 import com.newegg.redis.model.M_clusterInfo;
+import com.newegg.redis.util.BeanUtils;
 
 @Service
 @Scope("singleton")
@@ -90,8 +90,8 @@ public class ClusterInfoService {
 	public D_ClusterInfo updateClusterInfoByRedis(String id, M_clusterInfo info) throws Exception {
 		D_ClusterInfo clusterInfo = new D_ClusterInfo();
 		D_ClusterInfo old_ClusterInfo = getClusterInfo(id);
-		BeanUtils.copyProperties(clusterInfo, old_ClusterInfo);
-		BeanUtils.copyProperties(clusterInfo, info);
+		BeanUtils.copyNotNullProperties(clusterInfo, old_ClusterInfo);
+		BeanUtils.copyNotNullProperties(clusterInfo, info);
 		updateClusterInfo(clusterInfo);
 		return clusterInfo;
 	}
