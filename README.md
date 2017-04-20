@@ -1,6 +1,14 @@
 本项目是Redis Cluster集群的管理工具;
 项目地址 ： https://git.oschina.net/yanfanVIP/RedisClusterManager
 
+环境要求：Java8+
+系统部署方式：
+    1：下载最新版安装包
+        https://git.oschina.net/yanfanVIP/RedisClusterManager/releases
+    2：解压RedisManager-Web-1.0.0-SNAPSHOT.tar.gz到安装目录
+    3：运行相应脚本，启动服务器
+    4：若需要监控server信息，则将相应的monitor服务部署到Redis服务器中，并指定上报频率和服务器IP地址
+
 基于Java开发，数据库采用了嵌入式Leveldb, 方便部署。
 项目的主要功能有以下几点：
 1：集群监控功能；
