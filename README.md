@@ -2,6 +2,8 @@
 
 项目地址 ： https://git.oschina.net/yanfanVIP/RedisClusterManager
 
+演示地址：http://59.110.161.181
+
 环境要求：Java8+
 
 系统部署方式：
