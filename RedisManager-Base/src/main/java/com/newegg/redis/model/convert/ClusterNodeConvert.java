@@ -28,7 +28,7 @@ public class ClusterNodeConvert extends Convert<List<M_clusterNode>>{
 			}else{
 				clusterNode.setMyself(false);
 			}
-			clusterNode.setRole(RedisClusterRole.valueOf(line[2].toUpperCase()));
+			clusterNode.setRole(RedisClusterRole.get(line[2].toUpperCase()));
 			if(!"-".equals(line[3])){
 				clusterNode.setMaster(line[3]);
 			}
@@ -43,9 +43,11 @@ public class ClusterNodeConvert extends Convert<List<M_clusterNode>>{
 				while (line.length > i) {
 					M_Slot slot = new M_Slot();
 					String[] slot_t = line[i].split("-");
-					slot.setStart(Integer.valueOf(slot_t[0]));
-					slot.setEnd(Integer.valueOf(slot_t[1]));
-					slots.add(slot);
+					if(slot_t.length == 2){
+						slot.setStart(Integer.valueOf(slot_t[0]));
+						slot.setEnd(Integer.valueOf(slot_t[1]));
+						slots.add(slot);
+					}
 					i++;
 				}
 				clusterNode.setSlots(slots);

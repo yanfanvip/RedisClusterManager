@@ -5137,3 +5137,98 @@ a.text-#000000:hover {
     max-width: 300px;
     overflow: hidden;
 }
+
+
+
+.window:after {
+  content: '. . .';
+  position: absolute;
+  left: 12px;
+  right: 0;
+  top: -3px;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 96px;
+  color: #fff;
+  line-height: 0;
+  letter-spacing: -12px;
+}
+
+.terminalModal .modal-dialog{
+	width:80%;
+	overflow-x: hidden;
+	overflow-y: hidden;
+}
+.terminalModal .modal-body{
+	padding:0;
+}
+
+.terminal {
+	width:100%;
+	height:600px;
+	max-height:600px;
+	overflow-y:auto;
+    margin: 0;
+    font-family: monospace;
+    font-size: 16px;
+    background : black;
+    color: #22da26;
+}
+.terminal .command {
+  width: 0%;
+  white-space: normal;
+  overflow: hidden;
+}
+.terminal .command:before {
+  content: '$ ';
+  color: #22da26;
+}
+.terminal .commandInput{
+	width:100%;
+	color: #ffffff;
+	background-color: transparent;
+    border: 0;
+    display: inline-flex;
+}
+.terminal .commandInput textarea{
+	width:100%;
+	padding-left:10px;
+	color: #ffffff;
+	background-color: transparent;
+    border: 0;
+    overflow-y:hidden;
+}
+.terminal .commandInput p{
+	min-width: 50px;
+	color: #22da26;
+}
+.terminal .log {
+  white-space: normal;
+  overflow: hidden;
+}
+
+
+
+
+.upload {
+	width: 100%;
+	height:100px;
+	line-height:100px;
+	position: relative;
+	border-style: dashed !important;
+	border: 2px solid #dee5e7;
+	text-align:center;
+}
+.upload-info {
+	border: 2px solid #479ac7;
+}
+.upload input{
+	position: absolute;
+	height: 100%;
+    width: 100%;
+	opacity: 0;
+	cursor: pointer;
+}
+.upload i{
+	font-size: 102px;
+    vertical-align: middle;
+}

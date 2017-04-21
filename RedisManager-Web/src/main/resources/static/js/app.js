@@ -11,5 +11,7 @@ angular.module('app', [
     'ui.validate',
     'toaster',
     'oc.lazyLoad',
-    'angular-echarts'
+    'angular-echarts',
+    'ngWebSocket',
+    'angularFileUpload'
 ]).controller('AppCtrl', function($scope) { });

@@ -1,6 +1,12 @@
 <div ng-controller="DashboardCtrl">
-  <div class="bg-light lter b-b wrapper-md">
-    <h1 class="m-n font-thin h3">Dashboard</h1>
+  <div class="bg-light lter b-b wrapper-md row">
+      <div class="col-sm-6">
+	  	  <h1 class="m-n font-thin h3">Dashboard</h1>
+	  </div>
+    
+	  <div class="col-sm-6 text-right hidden-xs">
+	  	  <button class="btn m-b-xs btn-sm btn-success btn-addon" ng-click="create()"><i class="fa fa-search"></i>Create New Cluster</button>
+	  </div>
   </div>
   <div class="wrapper-md text-center" style="overflow: scroll;">
 
@@ -8,7 +14,7 @@
       <div class="col-xs-3" ng-repeat="cluster in clusters">
         <a style="height:150px" ng-click="openCluster(cluster)" class="block panel padder-s item" ng-class="{true: 'bg-info', false: 'bg-danger'}[cluster.cluster_state == 'ok']">
           <span class="text-white font-thin h1 block">{{cluster.name}}</span>
-          <span class="text-white font-thin h3 block">Nodes: {{cluster.cluster_known_nodes}}  MasterSize: {{cluster.cluster_size}}</span>
+          <span class="text-white font-thin h3 block">Know Nodes: {{cluster.cluster_known_nodes}}  Cluster Size: {{cluster.cluster_size}}</span>
           <span class="text-muted text-xs">ClusterID: {{cluster.uuid}}</span>
           <span class="bottom text-right w-full">
               <i class="fa fa-area-chart text-muted m-r-sm"></i>

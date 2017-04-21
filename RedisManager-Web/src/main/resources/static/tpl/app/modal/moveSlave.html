@@ -1,0 +1,23 @@
+<div class="modal-header">
+	<button type="button" class="close" ng-click="closeModal()">&times;</button>
+    <h3 class="modal-title">Add Cluster Monitor</h3>
+</div>
+<div class="modal-body">
+	<form class="form-horizontal" name ="siteform" method="get" novalidate>
+	
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Master</label>
+			<div class="col-sm-9">
+				<select class="form-control m-b" required ng-model="modalModel.select" placeholder="please choose the Master">
+					<option value="">-- please choose the Master --</option>
+					<option ng-repeat="master in tree.masters" value="{{master.master.node}}">{{master.master.host}}:{{master.master.port}}</option>
+				</select>
+			</div>
+		</div>
+        
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-disabled="siteform.$invalid" ng-click="ok()">OK</button>
+    <button class="btn btn-default" ng-click="closeModal()">Cancle</button>
+</div>

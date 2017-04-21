@@ -20,6 +20,7 @@
 	    <module>RedisManager-Base</module>
 		<module>RedisManager-Service</module>
 		<module>RedisManager-Web</module>
+		<module>RedisManager-Monitor</module>
     </modules>
     
 	<properties>

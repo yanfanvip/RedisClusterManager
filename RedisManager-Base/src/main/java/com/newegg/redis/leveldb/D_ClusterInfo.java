@@ -14,14 +14,6 @@ public class D_ClusterInfo extends D_Level{
 	private String uuid;
 	
 	private String name;
-	/**
-	 * Master个数
-	 */
-	private Integer masterNum;
-	/**
-	 * Slave个数
-	 */
-	private Integer slaveNum;
 	
 	private String cluster_state;
 	private Integer cluster_slots_assigned;
@@ -48,18 +40,6 @@ public class D_ClusterInfo extends D_Level{
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public Integer getMasterNum() {
-		return masterNum;
-	}
-	public void setMasterNum(Integer masterNum) {
-		this.masterNum = masterNum;
-	}
-	public Integer getSlaveNum() {
-		return slaveNum;
-	}
-	public void setSlaveNum(Integer slaveNum) {
-		this.slaveNum = slaveNum;
 	}
 	public String getCluster_state() {
 		return cluster_state;

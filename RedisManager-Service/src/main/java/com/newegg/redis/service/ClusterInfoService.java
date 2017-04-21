@@ -4,11 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import com.newegg.redis.cluster.RedisClusterClient;
+import com.newegg.redis.cluster.RedisClusterTerminal;
 import com.newegg.redis.context.AppConstants;
 import com.newegg.redis.exceptions.ParameterException;
 import com.newegg.redis.leveldb.D_ClusterInfo;
@@ -17,6 +16,7 @@ import com.newegg.redis.leveldb.D_RedisClusterNode;
 import com.newegg.redis.leveldb.D_RedisInfo;
 import com.newegg.redis.leveldb.LevelTable;
 import com.newegg.redis.model.M_clusterInfo;
+import com.newegg.redis.util.BeanUtils;
 
 @Service
 @Scope("singleton")
@@ -72,7 +72,7 @@ public class ClusterInfoService {
 	 * 从Redis中查询一个集群的信息
 	 * @return 
 	 */
-	public M_clusterInfo getClusterInfoByRedis(RedisClusterClient client) throws Exception{
+	public M_clusterInfo getClusterInfoByRedis(RedisClusterTerminal client) throws Exception{
 		return client.getClusterInfo();
 	}
 	
@@ -90,8 +90,8 @@ public class ClusterInfoService {
 	public D_ClusterInfo updateClusterInfoByRedis(String id, M_clusterInfo info) throws Exception {
 		D_ClusterInfo clusterInfo = new D_ClusterInfo();
 		D_ClusterInfo old_ClusterInfo = getClusterInfo(id);
-		BeanUtils.copyProperties(clusterInfo, old_ClusterInfo);
-		BeanUtils.copyProperties(clusterInfo, info);
+		BeanUtils.copyNotNullProperties(clusterInfo, old_ClusterInfo);
+		BeanUtils.copyNotNullProperties(clusterInfo, info);
 		updateClusterInfo(clusterInfo);
 		return clusterInfo;
 	}
@@ -101,5 +101,19 @@ public class ClusterInfoService {
 	 */
 	public List<D_ClusterInfo> getAll() throws IOException {
 		return LevelTable.getAll(AppConstants.LEVEL_DATABASES_SYSTEM, D_ClusterInfo.class);
+	}
+
+	/**
+	 * 向集群中添加节点
+	 */
+	public void addNode(String cluster, String host, int port) throws Exception {
+		D_ClusterInfo clusterInfo = getClusterInfo(cluster);
+		RedisClusterTerminal clusterTerminal = new RedisClusterTerminal(host, port);
+		try {
+			clusterTerminal.clusterMeet(clusterInfo.getLast_read_host(), clusterInfo.getLast_read_port());
+			clusterTerminal.clusterSaveConfig();
+		} finally {
+			clusterTerminal.close();
+		}
 	}
 }

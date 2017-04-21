@@ -16,7 +16,11 @@ public class AppConfig {
 	 */
 	@Value("${monitor.redis.period.second:60}")
 	private int monitor_redis_period_second = 60;
-	
+	/**
+	 * 系统资源路径
+	 */
+	@Value("${manager.resource.path}")
+	private String resource;
 
 	public int getMonitor_history_duration() {
 		return monitor_history_duration;
@@ -33,6 +37,12 @@ public class AppConfig {
 	public void setMonitor_redis_period_second(int monitor_redis_period_second) {
 		this.monitor_redis_period_second = monitor_redis_period_second;
 	}
-	
-	
+
+	public String getResource() {
+		return resource;
+	}
+
+	public void setResource(String resource) {
+		this.resource = resource;
+	}
 }

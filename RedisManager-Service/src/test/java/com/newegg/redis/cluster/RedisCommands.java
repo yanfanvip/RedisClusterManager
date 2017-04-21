@@ -15,23 +15,23 @@ public class RedisCommands {
 		List<HostAndPort> list = new ArrayList<HostAndPort>(){
 			private static final long serialVersionUID = 1L;
 			{
-				add(new HostAndPort("192.168.3.50", 8200));
-				add(new HostAndPort("192.168.3.50", 8201));
-				add(new HostAndPort("192.168.3.50", 8202));
-				add(new HostAndPort("192.168.3.50", 8203));
-				add(new HostAndPort("192.168.3.50", 8204));
-				add(new HostAndPort("192.168.3.50", 8205));
-				add(new HostAndPort("192.168.3.50", 8206));
-				add(new HostAndPort("192.168.3.50", 8207));
-				add(new HostAndPort("192.168.3.50", 8208));
-				add(new HostAndPort("192.168.3.50", 8209));
+				add(new HostAndPort("10.16.236.133", 8200));
+				add(new HostAndPort("10.16.236.133", 8201));
+				add(new HostAndPort("10.16.236.133", 8202));
+				add(new HostAndPort("10.16.236.133", 8203));
+				add(new HostAndPort("10.16.236.133", 8204));
+				add(new HostAndPort("10.16.236.133", 8205));
+				add(new HostAndPort("10.16.236.133", 8206));
+				add(new HostAndPort("10.16.236.133", 8207));
+				add(new HostAndPort("10.16.236.133", 8208));
+				add(new HostAndPort("10.16.236.133", 8209));
 			}
 		};
 		
-		int i=45;
+		int i=80;
 		while(i-->0){
 			JedisCluster cluster = new JedisCluster(list.get(RandomUtil.nextInt(0, 9)));
-			cluster.set("aaa"+i, "aaabc:" + i);
+			cluster.set("sg"+i, "aaabc:" + i);
 			cluster.close();
 		}
 		

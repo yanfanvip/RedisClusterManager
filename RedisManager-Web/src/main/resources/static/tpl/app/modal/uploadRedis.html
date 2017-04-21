@@ -1,0 +1,41 @@
+<div class="modal-header">
+	<button type="button" class="close" ng-click="closeModal()">&times;</button>
+    <h3 class="modal-title">Add Cluster Monitor</h3>
+</div>
+<div class="modal-body">
+	<div class="bg-white text-center upload " nv-file-drop="upload-drop" nv-file-over="upload-success" over-class="upload-info" uploader="uploader">
+      	 <input accept="application/x-gzip, application/template" type="file" nv-file-select="" uploader="uploader"/>
+      	 <i class="fa fa-plus-square-o"></i>
+    </div>
+    
+    <div ng-if="uploader.queue.length > 0" style="padding-top: 20px;">
+	      <table class="table bg-white-only b-a">
+	          <thead>
+	              <tr>
+	                  <th width="30%">Name</th>
+	                  <th class="text-center" >Size</th>
+	                  <th class="text-center">Progress</th>
+	                  <th class="text-center" width="50px;">Options</th>
+	              </tr>
+	          </thead>
+	          <tbody>
+	              <tr ng-repeat="item in uploader.queue">
+	                  <td><strong>{{ item.file.name }}</strong></td>
+	                  <td class="text-center">{{ item.file.size/1024/1024|number:2 }} MB</td>
+	                  <td class="text-center">
+	                      <div class="progress progress-sm m-b-none m-t-xs">
+	                          <div class="progress-bar bg-info" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+	                      </div>
+	                  </td>
+	                  <td class="text-center">
+	                  	  <button class="btn btn-sm btn-icon btn-danger" ng-click="item.remove()"><i class="fa fa-trash-o"></i></button>
+	                  </td>
+	              </tr>
+	          </tbody>
+	      </table>
+     </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-info" ng-disabled="!uploader.getNotUploadedItems().length" ng-click="ok()">Upload</button>
+    <button class="btn btn-default" ng-click="closeModal()">Cancle</button>
+</div>

@@ -3,25 +3,40 @@ package com.newegg.redis.cluster;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.newegg.redis.model.M_ClusterSlots;
 import com.newegg.redis.model.M_clusterInfo;
 import com.newegg.redis.model.M_clusterNode;
 import com.newegg.redis.model.M_clusterNode_Tree;
 import com.newegg.redis.model.M_info;
 import com.newegg.redis.model.convert.ClusterNodeConvert;
+import com.newegg.redis.model.convert.RedisMessageUtil;
+import com.newegg.redis.notify.Notify;
 import com.newegg.redis.util.ClusterTreeUtil;
-import com.newegg.redis.util.RedisMessageUtil;
+
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisCluster.Reset;
 
-public class RedisClusterClient extends Jedis{
+public class RedisClusterTerminal extends Jedis{
 	
-	public RedisClusterClient(HostAndPort hp) {
+	Notify notify;
+	
+	public RedisClusterTerminal(HostAndPort hp) {
 	    super(hp.getHost(), hp.getPort());
 	}
 	
-	public RedisClusterClient(final String host, final int port) {
+	public RedisClusterTerminal(final String host, final int port) {
 	    super(host, port);
+	}
+	
+	public RedisClusterTerminal(HostAndPort hp,Notify notify) {
+	    super(hp.getHost(), hp.getPort());
+	    this.notify = notify;
+	}
+	
+	public RedisClusterTerminal(final String host, final int port,Notify notify) {
+	    super(host, port);
+	    this.notify = notify;
 	}
 	
 	public M_clusterInfo getClusterInfo() throws Exception {
@@ -56,7 +71,7 @@ public class RedisClusterClient extends Jedis{
 	 * 初始化节点
 	 * @return 
 	 */
-	public RedisClusterClient reset() {
+	public RedisClusterTerminal reset() {
 		try { clusterFlushSlots(); } catch (Exception e) { }
 		try { flushDB(); } catch (Exception e) { }
 		clusterReset(Reset.HARD);
@@ -68,8 +83,8 @@ public class RedisClusterClient extends Jedis{
 	 * 加入节点
 	 * @throws Exception 
 	 */
-	public void meet(List<RedisClusterClient> nodes) throws Exception{
-		for (RedisClusterClient client : nodes) {
+	public void meet(List<RedisClusterTerminal> nodes) throws Exception{
+		for (RedisClusterTerminal client : nodes) {
 			if(client.hashCode() != this.hashCode()){
 				clusterMeet(client.getClient().getHost(), client.getClient().getPort());
 			}
@@ -80,7 +95,7 @@ public class RedisClusterClient extends Jedis{
 		while(!over){
 			Thread.sleep(1000);
 			over = true;
-			for (RedisClusterClient client : nodes) {
+			for (RedisClusterTerminal client : nodes) {
 				M_clusterInfo info = client.getClusterInfo();
 				over = size == info.getCluster_known_nodes();
 				if(!over){
@@ -91,9 +106,66 @@ public class RedisClusterClient extends Jedis{
 	}
 	
 	/**
+	 * 将当前槽迁移到该节点
+	 */
+	public void reshard(int start,int end)throws Exception {
+		message("start move slot from " + start + " to " + end);
+		List<M_clusterNode> all = getClusterNode_list();
+		Map<HostAndPort, M_clusterNode> hpNodes = new HashMap<HostAndPort, M_clusterNode>();
+		M_clusterNode myself = null;
+		for (M_clusterNode n : all) {
+			if(n.getMaster() == null || "".equals(n.getMaster())){
+				hpNodes.put(new HostAndPort(n.getHost(), n.getPort()), n);
+			}
+			if(n.getMyself()!= null && n.getMyself()){
+				myself = n;
+			}
+		}
+		M_ClusterSlots clusterSlots = new M_ClusterSlots(clusterSlots(), hpNodes);
+		int i = start;
+		while(i <= end){
+			M_clusterNode sourceNode = clusterSlots.getNodeBySlot(i);
+			if(sourceNode == null || !sourceNode.getNode().equals(myself.getNode())){
+				message(">> move :" + i);
+				moveSlot(myself, sourceNode, i);
+			}
+			i++;
+		}
+		message(">> all done!");
+	}
+	
+	/**
+	 * 迁移指定的槽
+	 */
+	private void moveSlot(M_clusterNode myself, M_clusterNode sourceNode, int slot) throws Exception{
+		if(sourceNode != null){//设置为待迁移状态
+			RedisClusterTerminal source = new RedisClusterTerminal(sourceNode.getHost(), sourceNode.getPort());
+			try {
+				clusterSetSlotImporting(slot, sourceNode.getNode());
+				source.clusterSetSlotMigrating(slot, myself.getNode());
+				message(">>start move data");
+				List<String> keys;
+				do {
+					keys = source.clusterGetKeysInSlot(slot, 100);
+					for (String key : keys) {
+						source.migrate(myself.getHost(), myself.getPort(), key, 0, 60000);
+					}
+				} while(keys.size() > 0);
+			}catch(Exception e){
+				clusterSetSlotStable(slot);
+				source.clusterSetSlotStable(slot);
+				throw e;
+			} finally {
+				source.close();
+			}
+		}
+		clusterSetSlotNode(slot, myself.getNode());
+	}
+
+	/**
 	 * 将当前结点设置为指定节点的从节点
 	 */
-	public RedisClusterClient slaveOf(String node) {
+	public RedisClusterTerminal slaveOf(String node) {
 		clusterReplicate(node);
 		return this;
 	}
@@ -101,7 +173,7 @@ public class RedisClusterClient extends Jedis{
 	/**
 	 * 从该节点删除某个节点
 	 */
-	public void forget(String node) throws Exception{
+	public void forget(String node) {
 		clusterForget(node);
 		clusterSaveConfig();
 	}
@@ -119,4 +191,9 @@ public class RedisClusterClient extends Jedis{
 		return info;
 	}
 
+	void message(String msg){
+		if(notify != null){
+			notify.terminal(msg);
+		}
+	}
 }

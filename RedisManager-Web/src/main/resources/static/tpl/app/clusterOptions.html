@@ -1,8 +1,12 @@
 <div ng-controller="ClusterOptionsCtrl">
 	<div class="bg-light lter b-b wrapper-md row">
-		<div class="col-sm-6">
-			<h1 class="m-n font-thin h3">{{name}}</h1>
-		</div>
+	  <div class="col-sm-6">
+	  	  <h1 class="m-n font-thin h3">{{name}}</h1>
+	  </div>
+	   
+	  <div class="col-sm-6 text-right hidden-xs">
+	  	  <button class="btn m-b-xs btn-sm btn-success btn-addon" ng-click="addNode()"><i class="fa fa-plus-square"></i>Add Node</button>
+	  </div>
 	</div>
 	<div class="wrapper-md">
 
@@ -33,9 +37,8 @@
 	              <td>{{master.master.node}}</td>
 	              <td>{{master.master.slots}}</td>
 	              <td>
-	              	<button class="btn btn-sm btn-icon btn-info"><i class="fa fa-twitter"></i>A</button>
-	              	<button class="btn btn-sm btn-icon btn-info"><i class="fa fa-twitter"></i>B</button>
-	              	<button class="btn btn-sm btn-icon btn-info"><i class="fa fa-twitter"></i>C</button>
+	                  <button class="btn m-b-xs btn-sm btn-info btn-addon" ng-click="moveSlot(master.master)"><i class="fa fa-cubes"></i>Move Slots</button>
+	                  <button ng-if="master.master.slots.length == 0" class="btn m-b-xs btn-sm btn-primary btn-addon" ng-click="moveSlave(master.master)"><i class="fa fa-unlink"></i>Be Slave</button>
 	              </td>
 	            </tr>
 	            <tr ng-if="master.slaves != null && master.slaves.length > 0">
@@ -44,16 +47,18 @@
 		            	<table class="table" style="border-collapse:inherit;margin-bottom:0;">
 				            <tr ng-repeat="slave in master.slaves">
 				              <td style="width:50px;">
-				              	<i ng-if="slave.status == 'CONNECT'" class="icon-check text-success m-r-xs" />
-				              	<i ng-if="slave.status != 'CONNECT'" class="icon-close text-danger m-r-xs" />
+				              	 <i ng-if="slave.status == 'CONNECT'" class="icon-check text-success m-r-xs" />
+				              	 <i ng-if="slave.status != 'CONNECT'" class="icon-close text-danger m-r-xs" />
 				              </td>
 				              <td style="width:100px;">{{slave.role}}</td>
 				              <td style="width:250px;">{{slave.host}}</td>
 				              <td style="width:100px;">{{slave.port}}</td>
 				              <td style="width:350px;">{{slave.node}}</td>
-				              <td style="width:350px;">{{slave.slots}}</td>
+				              <td style="width:350px;"></td>
 				              <td>
-				              	
+				                  <button class="btn m-b-xs btn-sm btn-primary btn-addon" ng-click="moveSlave(slave)"><i class="fa fa-unlink"></i>Move Slave</button>
+	                  			  <button class="btn m-b-xs btn-sm btn-primary btn-addon" ng-click="toMaster(slave)"><i class="fa fa-random"></i>Be Master</button>
+	                  			  <button class="btn m-b-xs btn-sm btn-primary btn-addon" ng-click="delNode(slave)"><i class="fa fa-trash-o"></i>Delete</button>
 				              </td>
 				           </tr>
 		               </table>

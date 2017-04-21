@@ -1,0 +1,58 @@
+<div class="modal-header">
+	<button type="button" class="close" ng-click="closeModal()">&times;</button>
+    <h3 class="modal-title">Add Redis Server</h3>
+</div>
+<div class="modal-body">
+	<form class="form-horizontal" name ="siteform" method="get" novalidate>
+	<div class="form-group">
+          <label class="col-sm-3 control-label">HostName</label>
+          <div class="col-sm-9">
+            <input type="text" name="hostname" class="form-control" ng-model="modalModel.hostname" placeholder="hostname or ip" required>                     
+          <span style="color:red" ng-show="siteform.hostname.$dirty && siteform.hostname.$invalid">
+ 			<span ng-show="siteform.hostname.$error.required">Hostname is required</span>
+ 			</span>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-sm-3 control-label">HostAddress</label>
+          <div class="col-sm-9">
+            <input type="text" name="ip"  class="form-control" ng-model="modalModel.ip" placeholder="ip" required> 
+            <span style="color:red" ng-show="siteform.ip.$dirty && siteform.ip.$invalid">
+ 			<span ng-show="siteform.ip.$error.required">HostAddress is required</span>
+ 			</span>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-sm-3 control-label">UserName</label>
+          <div class="col-sm-9">
+            <input type="text" name="userName"  class="form-control" ng-model="modalModel.userName" placeholder="ssh username" required> 
+            <span style="color:red" ng-show="siteform.userName.$dirty && siteform.userName.$invalid">
+ 			<span ng-show="siteform.userName.$error.required">Username is required</span>
+ 			</span>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Password</label>
+          <div class="col-sm-9">
+            <input type="password" name="password"  class="form-control" ng-model="modalModel.password" placeholder="ssh password"> 
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-sm-3 control-label">Workhome</label>
+          <div class="col-sm-9">
+            <input type="text" name="workhome"  class="form-control" ng-model="modalModel.workhome" placeholder="workhome" required> 
+            <span style="color:red" ng-show="siteform.workhome.$dirty && siteform.workhome.$invalid">
+ 			<span ng-show="siteform.workhome.$error.required">workhome is required</span>
+ 			</span>
+          </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-disabled="siteform.$invalid" ng-click="ok()">OK</button>
+    <button class="btn btn-default" ng-click="closeModal()">Cancle</button>
+</div>
