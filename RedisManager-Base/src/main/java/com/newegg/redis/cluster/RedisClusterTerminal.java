@@ -9,9 +9,10 @@ import com.newegg.redis.model.M_clusterNode;
 import com.newegg.redis.model.M_clusterNode_Tree;
 import com.newegg.redis.model.M_info;
 import com.newegg.redis.model.convert.ClusterNodeConvert;
+import com.newegg.redis.model.convert.RedisMessageUtil;
 import com.newegg.redis.notify.Notify;
 import com.newegg.redis.util.ClusterTreeUtil;
-import com.newegg.redis.util.RedisMessageUtil;
+
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisCluster.Reset;

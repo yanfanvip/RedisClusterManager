@@ -5205,3 +5205,30 @@ a.text-#000000:hover {
   white-space: normal;
   overflow: hidden;
 }
+
+
+
+
+.upload {
+	width: 100%;
+	height:100px;
+	line-height:100px;
+	position: relative;
+	border-style: dashed !important;
+	border: 2px solid #dee5e7;
+	text-align:center;
+}
+.upload-info {
+	border: 2px solid #479ac7;
+}
+.upload input{
+	position: absolute;
+	height: 100%;
+    width: 100%;
+	opacity: 0;
+	cursor: pointer;
+}
+.upload i{
+	font-size: 102px;
+    vertical-align: middle;
+}

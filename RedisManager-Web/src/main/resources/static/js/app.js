@@ -12,5 +12,6 @@ angular.module('app', [
     'toaster',
     'oc.lazyLoad',
     'angular-echarts',
-    'ngWebSocket'
+    'ngWebSocket',
+    'angularFileUpload'
 ]).controller('AppCtrl', function($scope) { });

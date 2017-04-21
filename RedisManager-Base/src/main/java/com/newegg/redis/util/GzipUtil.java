@@ -187,9 +187,13 @@ public class GzipUtil {
     }
     
     public static void main(String[] args) {
-    	List<String> files = GzipUtil.getTarRootFile("E:\\Tools\\JDK\\jre-8u65-linux-i586.gz");
-    	for (String string : files) {
-			System.out.println(string);
-		}
+    	String jre = GzipUtil.getTarRootFile("E:\\Tools\\JDK\\jre-8u65-linux-i586.gz").get(0);
+    	System.out.println(jre);
+    	
+    	String redis = GzipUtil.getTarRootFile("E:\\source\\old\\redis.3.0.6.x64.gz").get(0);
+    	System.out.println(redis);
+    	
+    	String systemMonitor = GzipUtil.getTarRootFile("E:\\source\\old\\systemMonitor.gz").get(0);
+    	System.out.println(systemMonitor);
     }
 }
