@@ -2,7 +2,7 @@
 
 项目地址 ： https://git.oschina.net/yanfanVIP/RedisClusterManager
 
-演示地址：http://59.110.161.181 (阿里云网速较慢，请多等待。请尽量不要将集群弄坏，谢谢配合)
+演示地址：http://59.110.161.181 (阿里云网速较慢，请多等待。请尽量不要将Redis集群弄坏，谢谢配合)
 
 环境要求：Java8+
 
