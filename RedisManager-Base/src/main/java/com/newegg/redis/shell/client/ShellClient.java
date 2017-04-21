@@ -117,7 +117,7 @@ public class ShellClient {
 				int i = input.read(contents, 0, 1024);
 				if(i > 0){
 					context += new String(contents, 0, i);
-					if(context.trim().endsWith("#") || context.trim().endsWith("~") || context.trim().endsWith(":")){
+					if(context.trim().endsWith("#") || context.trim().endsWith("$") || context.trim().endsWith("~") || context.trim().endsWith(":")){
 						time = 2;
 					}
 				}else{

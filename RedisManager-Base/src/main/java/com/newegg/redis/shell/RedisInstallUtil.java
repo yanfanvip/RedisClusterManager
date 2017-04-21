@@ -177,8 +177,8 @@ public class RedisInstallUtil extends LinuxUtil{
 	}
 	
 	public static void main(String[] args) throws Exception {
-		SftpInterface ftp = SftpFactory.create("192.168.3.50", "root", "admin");
-		ShellClient client = new ShellClient("192.168.3.50", "root", "admin");
+		SftpInterface ftp = SftpFactory.create("192.168.3.50", "yanfan", "280516469");
+		ShellClient client = new ShellClient("192.168.3.50", "yanfan", "280516469");
 		RedisInstallUtil util = new RedisInstallUtil(ftp, client, "/opt/app/redisManager", "E:\\Soft\\redis", new Notify() {
 			@Override
 			public void terminal(String message) {
