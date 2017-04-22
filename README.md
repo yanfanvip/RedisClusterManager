@@ -57,5 +57,21 @@
 #2017-4-22 update#
 * 新增集群创建功能
 * 新增自动化RedisCluster部署功能
+
 ![自动化创建集群](https://git.oschina.net/uploads/images/2017/0422/161332_269f2649_37113.jpeg "自动化创建集群")
+
 ![输入图片说明](https://git.oschina.net/uploads/images/2017/0422/161407_826e6953_37113.jpeg "在这里输入图片标题")
+
+#创建集群方法#
+##1：打开Manager首页，点击右上角的Create Cluster
+##2:若没有在集群中注册redis打包文件，则点击Import Resource,并且上传Resource
+![资源列表](https://git.oschina.net/uploads/images/2017/0422/162556_b7ed34f5_37113.jpeg "资源列表")
+
+##3：若没有在集群中注册Server信息，则点击Import Server
+![注册Server](https://git.oschina.net/uploads/images/2017/0422/162730_b7c95c8e_37113.jpeg "注册Server")
+
+##4:点击Install Node, 进行Redis以及monitor的自动化安装
+![Install Node](https://git.oschina.net/uploads/images/2017/0422/162900_83341e55_37113.jpeg "Install Node")
+
+##5：安装完所有节点后，点击Create Cluster，填写Master数量，生成集群
+![自动化创建集群](https://git.oschina.net/uploads/images/2017/0422/161332_269f2649_37113.jpeg "自动化创建集群")
