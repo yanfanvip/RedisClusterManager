@@ -64,14 +64,29 @@
 
 #创建集群方法#
 ##1：打开Manager首页，点击右上角的Create Cluster
-##2:若没有在集群中注册redis打包文件，则点击Import Resource,并且上传Resource
+
+##2：若没有在集群中注册redis打包文件，则点击Import Resource,并且上传Resource
 ![资源列表](https://git.oschina.net/uploads/images/2017/0422/162556_b7ed34f5_37113.jpeg "资源列表")
 
 ##3：若没有在集群中注册Server信息，则点击Import Server
 ![注册Server](https://git.oschina.net/uploads/images/2017/0422/162730_b7c95c8e_37113.jpeg "注册Server")
 
-##4:点击Install Node, 进行Redis以及monitor的自动化安装
+##4：点击Install Node, 进行Redis以及monitor的自动化安装
 ![Install Node](https://git.oschina.net/uploads/images/2017/0422/162900_83341e55_37113.jpeg "Install Node")
 
 ##5：安装完所有节点后，点击Create Cluster，填写Master数量，生成集群
 ![自动化创建集群](https://git.oschina.net/uploads/images/2017/0422/161332_269f2649_37113.jpeg "自动化创建集群")
+
+##6：查询新建集群状态
+![输入图片说明](https://git.oschina.net/uploads/images/2017/0422/163104_5c4f26ae_37113.jpeg "在这里输入图片标题")
+
+#数据查询的方法#
+##1：在Manager首页，点击集群进入集群操作界面
+
+##2：点击右上角的Query按钮，进入查询界面
+
+##3：在搜索框输入需要查询的key，或者使用通配符‘*’进行匹配
+![Query](https://git.oschina.net/uploads/images/2017/0422/163334_df0daafb_37113.jpeg "Query")
+
+##4：在查询的key列表中，点击查询数据详情
+![输入图片说明](https://git.oschina.net/uploads/images/2017/0422/163505_02668e77_37113.jpeg "在这里输入图片标题")
