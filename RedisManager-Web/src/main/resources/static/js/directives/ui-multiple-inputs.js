@@ -3,27 +3,28 @@ angular.module('app').directive('uiMultipleInputs', function($timeout, $parse) {
     	restrict: 'EA',
     	scope : {
     		placeholder : '@',
-    		ngModel : '='
+    		onAdd : '=',
+    		ngModel : '=',
+    		type : '@'
         },
-    	template:'<div style="display: flex;">'+
-			    	'<div ng-if="ngModel.length > 0" style="padding-top: 7px;">'+
-			    		'<ul style="display:inline;padding: 15px;">'+
-			    			'<li ng-repeat="item in ngModel" style="padding:3px 5px 3px 5px; margin: 0 5px 0 5px;border-radius:5px;display:inline;background-color:#1b75bb;color:#ffffff;">'+
-			    				'<span>{{item}}</span><a style="padding-left:10px;color:#ffffff;" ng-click="remove(item,$index)">x</a>'+
-			    			'</li>'+
-			    		'</ul>'+
-			    	'</div>'+
-			    	'<div style="width:100%;">'+
-			    		'<input class="form-control" style="width:100%;padding-top: 7px;" type="text" ng-model="model" ng-keypress="($event.which === 13)?add(model):0" placeholder="{{placeholder}}">'+
-			    	'</div>'+
-			    '</div>',
+        replace: true,
+    	template:'<div class="chosen-container chosen-container-multi chosen-with-drop chosen-container-active">'+
+				 '	<ul class="chosen-choices">'+
+				 '		<li ng-repeat="item in ngModel" class="choice" ng-click="remove(item,$index)">'+
+				 '			<span>{{item}}</span><a class="fa fa-trash-o"></a>'+
+				 '		</li>'+
+				 '		<li class="choice-input"><input type="{{type}}" ng-model="model" ng-keypress="($event.which === 13)?add(model):0" placeholder="{{placeholder}}" autocomplete="off"></li>'+
+				 '	</ul>'+
+				 '</div>',
 		link: function(scope, element, attr) {
 			scope.add = function(model){
 				if(!scope.ngModel){
 					scope.ngModel = [];
 				}
-				if(scope.ngModel.indexOf(model) == -1){
-					scope.ngModel.push(model);
+				if(!scope.onAdd || scope.onAdd(model)){
+					if(scope.ngModel.indexOf(model) == -1){
+						scope.ngModel.push(model);
+					}
 				}
 				scope.model = "";
 			}

@@ -4,11 +4,38 @@
 	  	  <h1 class="m-n font-thin h3">Create New Cluster</h1>
 	  </div>
 	  <div class="col-sm-6 text-right hidden-xs">
-	  	  <button class="btn m-b-xs btn-sm btn-success btn-addon" ng-click="importServer()"><i class="fa fa-linux"></i>Import Redis Server</button>
-	  	  <button class="btn m-b-xs btn-sm btn-success btn-addon" ng-click="importVersion()"><i class="fa fa-cloud-upload"></i>Import Redis Version</button>
+	  	  <button class="btn m-b-xs btn-sm btn-success btn-addon" ng-click="importVersion()"><i class="fa fa-cloud-upload"></i>Import Resource</button>
+	  	  <button class="btn m-b-xs btn-sm btn-success btn-addon" ng-click="importServer()"><i class="fa fa-linux"></i>Import Server</button>
+	  	  <button class="btn m-b-xs btn-sm btn-info btn-addon" ng-click="install()"><i class="fa fa-link"></i>Install Node</button>
+	  	  <button class="btn m-b-xs btn-sm btn-info btn-addon" ng-click="create()"><i class="fa fa-sitemap"></i>Creat Cluster</button>
 	  </div>
   </div>
   <div class="wrapper-md text-center">
 		
+		<div class="panel panel-default">
+	        <table class="table table-striped m-b-none text-center">
+	          <thead>
+	            <tr>
+	            	<th class="text-center" style="width:50px;">Index</th>
+	            	<th class="text-center" style="width:300px;">Hostname</th>
+	            	<th class="text-center" style="width:300px;">Port</th>
+	            	<th class="text-center" style="width:300px;">RedisVersion</th>
+	              	<th class="text-center">Options</th>
+	            </tr>
+	          </thead>
+	          <tbody ng-repeat="install in installed">
+	            <tr>
+	              <td>{{$index + 1}}</td>
+	              <td>{{install.ip}}</td>
+	              <td>{{install.port}}</td>
+	              <td>{{install.resource}}</td>
+	              <td>
+	              		<button class="btn m-b-xs btn-sm btn-info btn-addon" ng-click="remove(install)"><i class="fa fa-trash-o"></i>Remove</button>
+	              </td>
+	            </tr>
+	          </tbody>
+	        </table>
+	    </div>
+
   </div>
 </div>

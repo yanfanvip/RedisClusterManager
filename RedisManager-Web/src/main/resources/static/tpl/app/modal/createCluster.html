@@ -1,0 +1,31 @@
+<div class="modal-header">
+	<button type="button" class="close" ng-click="closeModal()">&times;</button>
+    <h3 class="modal-title">Create Cluster</h3>
+</div>
+<div class="modal-body">
+	<form class="form-horizontal" name ="siteform" method="get" novalidate>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Name</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" ng-model="modalModel.name" placeholder="please input redis cluster name" required>                     
+				<span style="color:red" ng-show="siteform.name.$dirty && siteform.name.$invalid">
+					<span ng-show="siteform.name.$error.required">redis cluster name is required</span>
+				</span>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Master Size</label>
+			<div class="col-sm-9">
+				<input type="number" name="master" class="form-control" ng-model="modalModel.master" placeholder="please input redis master size" required>                     
+				<span style="color:red" ng-show="siteform.master.$dirty && siteform.master.$invalid">
+					<span ng-show="siteform.master.$error.required">redis master size is required</span>
+				</span>
+			</div>
+		</div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-disabled="siteform.$invalid" ng-click="ok()">OK</button>
+    <button class="btn btn-default" ng-click="closeModal()">Cancle</button>
+</div>

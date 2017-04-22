@@ -27,7 +27,6 @@ app.controller('ImportVersionCtrl', function($scope, $state, $http, $modal, $Pop
     };
     
     uploader.onCompleteItem = function(fileItem, response, status, headers) {
-    	console.log(response);
         if(!response.status){
         	uploader.cancelAll();
         	toaster.pop("error", response.message);

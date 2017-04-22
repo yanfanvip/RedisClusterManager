@@ -1,12 +1,14 @@
 package org.redis.manager.model;
 
+import java.util.List;
+
 public class W_RedisInstall extends WebSocketModel{
 	private static final long serialVersionUID = 1894941362398915472L;
 
 	private String ip;
-	private Integer port;
-	private String version;
-	private Long memory;
+	private List<Integer> ports;
+	private String source;
+	private Integer memory;
 	private String config;
 	
 	public String getIp() {
@@ -15,16 +17,16 @@ public class W_RedisInstall extends WebSocketModel{
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
-	public Integer getPort() {
-		return port;
+	public List<Integer> getPorts() {
+		return ports;
 	}
-	public void setPort(Integer port) {
-		this.port = port;
+	public void setPorts(List<Integer> ports) {
+		this.ports = ports;
 	}
-	public Long getMemory() {
+	public Integer getMemory() {
 		return memory;
 	}
-	public void setMemory(Long memory) {
+	public void setMemory(Integer memory) {
 		this.memory = memory;
 	}
 	public String getConfig() {
@@ -33,10 +35,10 @@ public class W_RedisInstall extends WebSocketModel{
 	public void setConfig(String config) {
 		this.config = config;
 	}
-	public String getVersion() {
-		return version;
+	public String getSource() {
+		return source;
 	}
-	public void setVersion(String version) {
-		this.version = version;
+	public void setSource(String source) {
+		this.source = source;
 	}
 }

@@ -5,6 +5,7 @@ public class D_RedisInstall extends D_Level{
 	
 	private String ip;
 	private Integer port;
+	private String resource;
 	
 	@Override
 	String key() {
@@ -24,4 +25,11 @@ public class D_RedisInstall extends D_Level{
 		this.port = port;
 	}
 
+	public String getResource() {
+		return resource;
+	}
+
+	public void setResource(String resource) {
+		this.resource = resource;
+	}
 }

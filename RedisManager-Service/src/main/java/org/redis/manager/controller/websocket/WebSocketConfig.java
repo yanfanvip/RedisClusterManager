@@ -14,9 +14,16 @@ public class WebSocketConfig extends SpringBootServletInitializer implements Web
 	@Autowired
 	SlotMoveHandle slotMoveHandle;
 	
+	@Autowired
+	RedisInstallHandle redisInstallHandle;
+	
+	@Autowired
+	CreateClusterHandle createClusterHandle;
+	
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		registry.addHandler(slotMoveHandle, "/slot_move");
-		registry.addHandler(slotMoveHandle, "/command");
+		registry.addHandler(redisInstallHandle, "/install");
+		registry.addHandler(createClusterHandle, "/create");
 	}
 }

@@ -132,7 +132,6 @@ public class RedisClusterTerminal extends Jedis{
 			}
 			i++;
 		}
-		message(">> all done!");
 	}
 	
 	/**

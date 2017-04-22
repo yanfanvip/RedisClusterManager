@@ -1,8 +1,6 @@
 package org.redis.manager.service;
 
 import java.util.Map;
-
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.redis.manager.cluster.RedisClusterTerminal;
 import org.redis.manager.leveldb.D_RedisClusterNode;
 import org.redis.manager.model.ClusterServerCache;
@@ -26,13 +24,8 @@ public class SlotMoveService {
 			RedisClusterTerminal terminal = new RedisClusterTerminal(target.getHost(), target.getPort(), notify);
 			try {
 				terminal.reshard(slotMove.getStart(), slotMove.getEnd());
-			}catch (Exception e) {
-				if(notify != null){
-					notify.terminal("slot move error:" + ExceptionUtils.getStackTrace(e));
-				}
-			} finally {
+			}finally {
 				terminal.close();
-				notify.close();
 			}
 		}
 	}

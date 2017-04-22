@@ -2,7 +2,6 @@ package org.redis.manager.controller;
 
 import org.redis.manager.leveldb.D_ClusterInfo;
 import org.redis.manager.model.ClusterServerCache;
-import org.redis.manager.monitor.MonitorRedis;
 import org.redis.manager.service.ClusterInfoService;
 import org.redis.manager.service.ClusterNodeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +22,11 @@ public class ClusterManagerController extends BaseController{
 	@Autowired
 	ClusterNodeService clusterNodeService;
 	
-	@Autowired
-	MonitorRedis monitor;
-	
 	@RequestMapping(value = "/cluster/add", method = RequestMethod.POST)
 	@ResponseBody
 	public Object cluster_add(D_ClusterInfo clusterInfo) throws Exception {
 		clusterInfo = clusterInfoService.addClusterInfo(clusterInfo);
 		ClusterServerCache.updateServer(clusterInfo, null);
-		monitor.updateCluster(clusterInfo);
 		return SUCCESS(clusterInfo.getUuid());
 	}
 	

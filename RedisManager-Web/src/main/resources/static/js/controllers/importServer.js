@@ -22,7 +22,6 @@ app.controller('ImportServerCtrl', function($scope, $state, $http, $modal, $inte
 	    				initData();
 	    			}
 	            });
-	            console.log($scope.modalModel);
 	    		modalInstance.close();
 		    };
 		    $scope.closeModal = function(){

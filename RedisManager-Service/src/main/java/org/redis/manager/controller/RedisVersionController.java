@@ -1,8 +1,7 @@
 package org.redis.manager.controller;
 
 import java.util.List;
-
-import org.redis.manager.leveldb.D_RedisVersion;
+import org.redis.manager.model.RedisVersionInfo;
 import org.redis.manager.service.RedisInstallService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +18,7 @@ public class RedisVersionController extends BaseController{
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ResponseBody
-	public List<D_RedisVersion> list() throws Exception {
+	public List<RedisVersionInfo> list() throws Exception {
 		return redisInstallService.getRedisVersion();
 	}
 	

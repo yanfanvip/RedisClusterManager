@@ -49,16 +49,14 @@ public class RedisInstallUtil extends LinuxUtil{
 	
 	/**
 	 * 安装Redis服务
-	 * @param version
+	 * @param name 需要安装的redis文件
 	 * @param ports
 	 * @throws Exception 
 	 */
-	public void install(String version, List<Integer> ports, Integer memory, String config) throws Exception {
+	public void install(String name, List<Integer> ports, Integer memory, String config) throws Exception {
 		mkdirs(workpath);
 		cd(workpath);
 		if(!checkDir(workpath + "/" + redis_home)){//Redis没有部署
-			String system = x64()?"x64":"x86";
-			String name = sourceRule.replace("{system}", system).replace("{version}", version);
 			if(!checkFile(workpath + "/redis.gz")){//没有源文件
 				File sourceFile = new File(source + "/" + name);
 				message(">> upload file:" + sourceFile.getPath());
@@ -112,6 +110,14 @@ public class RedisInstallUtil extends LinuxUtil{
 		Thread.sleep(3000);
 		if(check(port) == null){
 			throw new Exception("restart redis fail");
+		}
+	}
+	
+	public void stop(int port) throws Exception{
+		String pid = check(port);
+		if(pid != null){
+			message(">> kill redis port:" + port);
+			kill(pid);
 		}
 	}
 	
@@ -174,36 +180,5 @@ public class RedisInstallUtil extends LinuxUtil{
 			return processNum;
 		}
 		return null;
-	}
-	
-	public static void main(String[] args) throws Exception {
-		SftpInterface ftp = SftpFactory.create("192.168.3.50", "root", "admin");
-		ShellClient client = new ShellClient("192.168.3.50", "root", "admin");
-		RedisInstallUtil util = new RedisInstallUtil(ftp, client, "/opt/app/redisManager", "E:\\Soft\\redis", new Notify() {
-			@Override
-			public void terminal(String message) {
-				System.out.println(message);
-			}
-
-			@Override
-			public void close() {
-				
-			}
-		});
-		util.install("3.2.8", new ArrayList<Integer>(){
-			private static final long serialVersionUID = 1L;
-			{
-				add(8200);
-				add(8201);
-				add(8202);
-				add(8203);
-				add(8204);
-				add(8205);
-				add(8206);
-				add(8207);
-				add(8208);
-				add(8209);
-			}
-		}, 64, null);
 	}
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.redis.manager.cluster.RedisClusterTerminal;
+import org.redis.manager.leveldb.D_ClusterInfo;
 import org.redis.manager.leveldb.D_ClusterNode_Tree;
 import org.redis.manager.leveldb.D_RedisClusterNode;
 import org.redis.manager.leveldb.LevelTable;
@@ -13,12 +14,16 @@ import org.redis.manager.model.M_clusterNode;
 import org.redis.manager.model.enums.RedisNodeStatus;
 import org.redis.manager.util.BeanUtils;
 import org.redis.manager.util.ClusterTreeUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 @Service
 @Scope("singleton")
 public class ClusterNodeService {
+	
+	@Autowired
+	ClusterInfoService clusterInfoService;
 	
 	/**
 	 * 更新集群中所有节点信息
@@ -93,6 +98,7 @@ public class ClusterNodeService {
 		if(fnode != null){
 			new RedisClusterTerminal(fnode.getHost(), fnode.getPort()).reset().close();
 		}
+		D_RedisClusterNode last = null;
 		for (D_RedisClusterNode n : nodes.values()) {
 			if(!node.equals(n.getNode()) && n.getStatus() == RedisNodeStatus.CONNECT){
 				RedisClusterTerminal client = new RedisClusterTerminal(n.getHost(), n.getPort());
@@ -102,8 +108,13 @@ public class ClusterNodeService {
 				}catch(Exception e){} finally {
 					client.close();
 				}
+				last = n;
 			}
 		}
+		D_ClusterInfo info = clusterInfoService.getClusterInfo(cluster);
+		info.setLast_read_host(last.getHost());
+		info.setLast_read_port(last.getPort());
+		clusterInfoService.updateClusterInfo(info);
 	}
 
 	/**

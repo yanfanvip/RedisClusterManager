@@ -4,13 +4,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 import javax.servlet.MultipartConfigElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.redis.manager.context.AppConfig;
-import org.redis.manager.leveldb.D_RedisVersion;
 import org.redis.manager.model.enums.ServerTypeEnum;
 import org.redis.manager.service.RedisInstallService;
 import org.redis.manager.util.GzipUtil;
@@ -44,8 +41,8 @@ public class FileUploadController extends BaseController{
     public Object handleFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
     	try {
     		SaveFileFromInputStream(file.getInputStream(), appConfig.getResource() + "/upload", file.getOriginalFilename());
-    		Map<String, String> map = checkFile(appConfig.getResource() + "/upload" , file.getOriginalFilename());
-        	return SUCCESS(map);
+    		checkFile(appConfig.getResource() + "/upload" , file.getOriginalFilename());
+        	return SUCCESS();
 		} catch (Exception e) {
 			new File(appConfig.getResource() + "/upload" , file.getOriginalFilename()).delete();
 			log.error("upload fail", e);
@@ -53,7 +50,7 @@ public class FileUploadController extends BaseController{
 		}
     }
     
-    private Map<String, String> checkFile(String path, String filename) throws Exception {
+    private void checkFile(String path, String filename) throws Exception {
     	ServerTypeEnum type = null;
 		if(filename.toLowerCase().indexOf(".x86") != -1){
 			type = ServerTypeEnum.x86;
@@ -61,7 +58,6 @@ public class FileUploadController extends BaseController{
 		if(filename.toLowerCase().indexOf(".x64") != -1){
 			type = ServerTypeEnum.x64;
 		}
-    	Map<String, String> map = new HashMap<String, String>();
     	String uploadFile = filename;
     	if(filename.endsWith(".gz")){
     		try {
@@ -74,35 +70,19 @@ public class FileUploadController extends BaseController{
     		if(type == null){
     			throw new Exception("please change the upload file name like {redis}.{version}.{x86/x64}.gz");
     		}
-    		map.put("type", type.name());
-    		String version = uploadFile.replace("redis", "");
-    		map.put("version",version);
-    		map.put("name", "redis");
-    		new File(path + "/" + filename).renameTo(new File(appConfig.getResource() + "/"+ "redis." + version + "." + type + ".gz"));
-    		D_RedisVersion rv = new D_RedisVersion();
-    		rv.setName("redis." + version + "." + type + ".gz");
-    		rv.setType(type);
-    		rv.setVersion(version);
-    		redisInstallService.addRedisVersion(rv);
+    		new File(path + "/" + filename).renameTo(new File(appConfig.getResource() + "/"+ filename));
     	}else if(uploadFile.startsWith("jre") || uploadFile.startsWith("jdk")){
     		if(type == null){
     			throw new Exception("please change the upload file name like {jre}.{version}.{x86/x64}.gz");
     		}
-    		map.put("type",type.name());
-    		String version = uploadFile.replace("jre", "").replace("jdk-", "");
-    		map.put("version",version);
-    		map.put("name", "jre");
-    		new File(path + "/" + filename).renameTo(new File(appConfig.getResource() + "/"+ "jre." + version + "." + type + ".gz"));
+    		new File(path + "/" + filename).renameTo(new File(appConfig.getResource() + "/"+ filename));
     	}else if(uploadFile.equals("systemMonitor")){
-    		map.put("name", "systemMonitor");
     		new File(path + "/" + filename).renameTo(new File(appConfig.getResource() + "/"+ "systemMonitor.gz"));
     	}else if(uploadFile.equals("redis.conf.template")){
-    		map.put("name", "redis.conf.template");
     		new File(path + "/" + filename).renameTo(new File(appConfig.getResource() + "/"+ "redis.conf.template"));
     	}else{
     		throw new Exception("this file is not resource");
     	}
-    	return map;
 	}
     
     /**保存文件

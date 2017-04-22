@@ -15,12 +15,6 @@ body {
   background-color: transparent;
 }
 
-highchart {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-}
-
 *:focus {
   outline: 0 !important;
 }
@@ -5232,3 +5226,48 @@ a.text-#000000:hover {
 	font-size: 102px;
     vertical-align: middle;
 }
+
+
+.chosen-container {
+  vertical-align: middle;
+  font-size: 13px;
+  display: inline-block;
+  width:100%;
+}
+.chosen-container .chosen-choices{
+  padding: 6px;
+  width:100%;
+  border: 1px solid #cfdadd;
+  margin: 0;
+}
+.chosen-container .chosen-choices .choice{
+  float: left;
+  list-style: none;
+  position: relative;
+  margin: 2px 5px 2px 5px;
+  padding: 5px;
+  border-radius: 3px;
+  background-color: #f5f5f5;
+  background-clip: padding-box;
+  line-height: 13px;
+  cursor: pointer;
+}
+.chosen-container .chosen-choices .choice a{
+  padding-left: 10px;
+}
+.chosen-container .chosen-choices .choice-input{
+  display:inline;
+}
+.chosen-container .chosen-choices .choice-input input{
+  	padding: 2px 5px;
+    height: 22px;
+    width:100%;
+    outline: 0;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none;
+    color: #666;
+    line-height: normal;
+    border-radius: 0;
+}
+    

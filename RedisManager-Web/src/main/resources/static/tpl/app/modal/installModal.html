@@ -1,0 +1,53 @@
+<div class="modal-header">
+	<button type="button" class="close" ng-click="closeModal()">&times;</button>
+    <h3 class="modal-title">Add Cluster Node</h3>
+</div>
+<div class="modal-body">
+	<form class="form-horizontal" name ="siteform" method="get" novalidate>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Server</label>
+			<div class="col-sm-9">
+				<select class="form-control m-b" required ng-model="modalModel.ip" placeholder="please choose server">
+					<option ng-repeat="server in servers" value="{{server.ip}}">{{server.hostname}}</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Ports</label>
+			<div class="col-sm-9 m-b">
+				<ui-multiple-inputs type="number" ng-model="modalModel.ports" placeholder="Press Enter to enter" required></ui-multiple-inputs>
+				<span style="color:red" ng-show="siteform.ports.$dirty && siteform.ports.$invalid">
+					<span ng-show="siteform.ports.$error.required">redis ports is required</span>
+				</span>
+			</div>
+		</div>
+        
+        <div class="form-group">
+			<label class="col-sm-3 control-label">RedisVersion</label>
+			<div class="col-sm-9">
+				<select class="form-control m-b" required ng-model="modalModel.source" placeholder="please choose redis resource">
+					<option ng-repeat="resource in resources" value="{{resource.name}}">{{resource.name}}</option>
+				</select>
+			</div>
+		</div>
+		
+        <div class="form-group">
+			<label class="col-sm-3 control-label">Memory</label>
+			<div class="col-sm-9">
+				<div class="input-group m-b">
+	              <input type="number" class="form-control" ng-model="modalModel.memory" placeholder="please input redis memory" required>
+	              <span class="input-group-addon">MB</span>
+	            </div>
+				<span style="color:red" ng-show="siteform.memory.$dirty && siteform.memory.$invalid">
+					<span ng-show="siteform.memory.$error.required">redis memory is required</span>
+				</span>
+			</div>
+		</div>
+		
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-disabled="siteform.$invalid" ng-click="ok()">OK</button>
+    <button class="btn btn-default" ng-click="closeModal()">Cancle</button>
+</div>

@@ -14,13 +14,17 @@ import org.redis.manager.leveldb.D_RedisClusterNode;
 import org.redis.manager.leveldb.D_RedisInfo;
 import org.redis.manager.leveldb.LevelTable;
 import org.redis.manager.model.M_clusterInfo;
+import org.redis.manager.monitor.MonitorRedis;
 import org.redis.manager.util.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 @Service
 @Scope("singleton")
 public class ClusterInfoService {
+	@Autowired
+	MonitorRedis monitor;
 	
 	/**
 	 * 添加一个集群到数据库中
@@ -37,6 +41,7 @@ public class ClusterInfoService {
 		});
 		info.setUuid(UUID.randomUUID().toString());
 		LevelTable.put(AppConstants.LEVEL_DATABASES_SYSTEM, info);
+		monitor.updateCluster(info);
 		return info;
 	}
 	

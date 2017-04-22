@@ -53,11 +53,10 @@ public class RedisClusterUtil {
 			}
 		}
 		cs.get(0).clusterSaveConfig();
-		message(notify, ">> create cluster success!");
+		message(notify, ">> create cluster success");
 		assignSlot(new ArrayList<HostAndPort>(map.keySet()), hrs, notify);
 		cs.get(0).clusterSaveConfig();
-		message(notify, ">> all done!");
-		notify.close();
+		message(notify, ">> assign slot success");
 	}
 	
 	/**
