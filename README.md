@@ -12,7 +12,18 @@
 * 解压RedisManager-Web-1.0.0-SNAPSHOT.tar.gz到安装目录
 * 运行相应脚本，启动服务器
 * 若需要监控server信息，则将相应的monitor服务部署到Redis服务器中，并指定上报频率和服务器IP地址
+* 配置Resource包含一下内容
 
+```
+.
+├── jre.1.7.x64.gz
+├── jre.1.7.x86.gz
+├── redis.3.0.6.x64.gz
+├── redis.3.0.6.x86.gz
+├── redis.conf.template
+└── systemMonitor-release.tar.gz
+
+```
 
 基于Java开发，数据库采用了嵌入式Leveldb, 方便部署。
 
