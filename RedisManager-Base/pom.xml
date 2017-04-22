@@ -7,7 +7,7 @@
 	<name>RedisManager-Base</name>
 
 	<parent>
-		<groupId>com.newegg.ec2</groupId>
+		<groupId>org.redis.manager</groupId>
 		<artifactId>RedisManager</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>

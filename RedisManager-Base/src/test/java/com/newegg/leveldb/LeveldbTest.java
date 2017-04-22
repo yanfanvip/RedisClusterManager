@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.newegg.redis.leveldb.D_ComputerInfo;
-import com.newegg.redis.leveldb.LevelTable;
+import org.redis.manager.leveldb.D_ComputerInfo;
+import org.redis.manager.leveldb.LevelTable;
 
 public class LeveldbTest {
 	

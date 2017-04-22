@@ -1,8 +1,9 @@
 package com.newegg;
 
 import java.lang.reflect.InvocationTargetException;
-import com.newegg.redis.leveldb.D_ServerInfo;
-import com.newegg.redis.util.BeanUtils;
+
+import org.redis.manager.leveldb.D_ServerInfo;
+import org.redis.manager.util.BeanUtils;
 
 public class CopyTest {
 	public static void main(String[] args) throws IllegalAccessException, InvocationTargetException {

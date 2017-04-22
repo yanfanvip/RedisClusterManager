@@ -2,11 +2,12 @@ package com.newegg.leveldb;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.newegg.redis.cluster.RedisClusterTerminal;
-import com.newegg.redis.leveldb.D_RedisClusterNode;
-import com.newegg.redis.leveldb.LevelTable;
-import com.newegg.redis.model.M_clusterNode;
-import com.newegg.redis.util.BeanUtils;
+
+import org.redis.manager.cluster.RedisClusterTerminal;
+import org.redis.manager.leveldb.D_RedisClusterNode;
+import org.redis.manager.leveldb.LevelTable;
+import org.redis.manager.model.M_clusterNode;
+import org.redis.manager.util.BeanUtils;
 
 public class D_RedisClusterNodeTest {
 

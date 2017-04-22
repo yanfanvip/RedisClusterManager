@@ -2,8 +2,8 @@ package com.newegg.leveldb;
 
 import java.io.IOException;
 
-import com.newegg.redis.leveldb.D_ComputerInfo;
-import com.newegg.redis.leveldb.LevelTable;
+import org.redis.manager.leveldb.D_ComputerInfo;
+import org.redis.manager.leveldb.LevelTable;
 
 public class D_ComputerInfoTest {
 

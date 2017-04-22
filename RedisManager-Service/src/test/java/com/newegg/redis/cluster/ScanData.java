@@ -3,7 +3,10 @@ package com.newegg.redis.cluster;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-import com.newegg.redis.model.ScanPage;
+
+import org.redis.manager.cluster.RedisClusterScan;
+import org.redis.manager.model.ScanPage;
+
 import redis.clients.jedis.HostAndPort;
 
 public class ScanData {

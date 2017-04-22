@@ -3,9 +3,9 @@ package com.newegg.redis.cluster;
 import java.io.IOException;
 import java.util.UUID;
 
-import com.newegg.redis.context.AppConstants;
-import com.newegg.redis.leveldb.D_ClusterInfo;
-import com.newegg.redis.leveldb.LevelTable;
+import org.redis.manager.context.AppConstants;
+import org.redis.manager.leveldb.D_ClusterInfo;
+import org.redis.manager.leveldb.LevelTable;
 
 public class LevelLost {
 

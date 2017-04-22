@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.newegg.redis.util.RandomUtil;
+import org.redis.manager.util.RandomUtil;
 
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;

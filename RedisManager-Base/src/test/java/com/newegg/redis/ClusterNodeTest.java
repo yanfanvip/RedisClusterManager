@@ -2,8 +2,8 @@ package com.newegg.redis;
 
 import java.util.List;
 
-import com.newegg.redis.cluster.RedisClusterTerminal;
-import com.newegg.redis.model.M_clusterNode;
+import org.redis.manager.cluster.RedisClusterTerminal;
+import org.redis.manager.model.M_clusterNode;
 
 public class ClusterNodeTest {
 	public static void main(String[] args) throws Exception {

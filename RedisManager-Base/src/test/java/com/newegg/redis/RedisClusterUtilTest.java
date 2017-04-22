@@ -3,9 +3,9 @@ package com.newegg.redis;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.newegg.redis.cluster.RedisClusterTerminal;
-import com.newegg.redis.cluster.RedisClusterUtil;
-import com.newegg.redis.notify.Notify;
+import org.redis.manager.cluster.RedisClusterTerminal;
+import org.redis.manager.cluster.RedisClusterUtil;
+import org.redis.manager.notify.Notify;
 
 import redis.clients.jedis.HostAndPort;
 
