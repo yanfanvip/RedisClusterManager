@@ -41,3 +41,10 @@
 集群数据查询
 ![scan](https://git.oschina.net/uploads/images/2017/0419/172117_a7256d26_37113.jpeg "scan")
 ![get data](https://git.oschina.net/uploads/images/2017/0419/172133_94c81f28_37113.jpeg "get data")
+
+
+#2017-4-22 update#
+* 新增集群创建功能
+* 新增自动化RedisCluster部署功能
+![自动化创建集群](https://git.oschina.net/uploads/images/2017/0422/161332_269f2649_37113.jpeg "自动化创建集群")
+![输入图片说明](https://git.oschina.net/uploads/images/2017/0422/161407_826e6953_37113.jpeg "在这里输入图片标题")
