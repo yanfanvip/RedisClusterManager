@@ -33,10 +33,8 @@ public class ClusterManagerController extends BaseController{
 	@RequestMapping(value = "/cluster/delete/{cluster:.+}", method = RequestMethod.POST)
 	@ResponseBody
 	public Object cluster_delete(@PathVariable String cluster) throws Exception {
-		if(ClusterServerCache.clusterExist(cluster)){
-			clusterInfoService.delete(cluster);
-			ClusterServerCache.deleteCluster(cluster);
-		}
+		clusterInfoService.delete(cluster);
+		ClusterServerCache.deleteCluster(cluster);
 		return SUCCESS();
 	}
 	
