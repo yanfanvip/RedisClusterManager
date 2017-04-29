@@ -32,14 +32,20 @@ public class ClusterServerCache {
 	}
 	
 	public static void updateServer(D_ClusterInfo c, List<D_RedisClusterNode> new_RedisClusterNodes){
-		Map<String, Set<String>> cs = new HashMap<String, Set<String>>();
 		HashSet<String> servers = new HashSet<String>();
 		if(new_RedisClusterNodes != null){
 			for (D_RedisClusterNode n : new_RedisClusterNodes) {
 				servers.add(n.getHost());
 			}
 		}
-		cs.put(c.getUuid(), servers);
-		clusterServers = cs;
+		clusterServers.put(c.getUuid(), servers);
+	}
+	
+	public static void updateClusters(List<D_ClusterInfo> cs){
+		for (D_ClusterInfo c : cs) {
+			if(!clusterExist(c.getUuid())){
+				updateServer(c, null);
+			}
+		}
 	}
 }

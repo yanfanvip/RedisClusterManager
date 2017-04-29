@@ -64,6 +64,7 @@ public class MonitorRedis {
 	 */
 	public void startJob() throws Exception{
 		List<D_ClusterInfo> clusters = clusterInfoService.getAll();
+		ClusterServerCache.updateClusters(clusters);
 		clusters.forEach(c -> {
 			try {
 				updateCluster(c);
